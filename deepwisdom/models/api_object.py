@@ -5,7 +5,7 @@ from deepwisdom.client import get_client, staticproperty
 from deepwisdom.utils import from_api
 
 class APIObject(object):
-    _client = staticproperty(get_client)
+    # _client = staticproperty(get_client)
     _converter = t.Dict({}).allow_extra("*")
 
     @classmethod
