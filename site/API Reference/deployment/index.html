@@ -1,0 +1,1930 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.2.3, mkdocs-material-8.1.2">
+    
+    
+      
+        <title>Deployment - DeepWisdom Python Client</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.f7951f6f.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.e6a45f82.min.css">
+        
+      
+    
+    
+    
+      
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/_mkdocstrings.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="" data-md-color-primary="none" data-md-color-accent="none">
+  
+    
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#deepwisdom.models.deployment" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="DeepWisdom Python Client" class="md-header__button md-logo" aria-label="DeepWisdom Python Client" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            DeepWisdom Python Client
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Deployment
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" aria-label="Clear" tabindex="-1">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="DeepWisdom Python Client" class="md-nav__button md-logo" aria-label="DeepWisdom Python Client" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
+
+    </a>
+    DeepWisdom Python Client
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        Home
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+    
+  
+  
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_2" type="checkbox" id="__nav_2" checked>
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_2">
+          API Reference
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="API Reference" data-md-level="1">
+        <label class="md-nav__title" for="__nav_2">
+          <span class="md-nav__icon md-icon"></span>
+          API Reference
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../dataset/" class="md-nav__link">
+        Dataset
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          Deployment
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        Deployment
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#deepwisdom.models.deployment" class="md-nav__link">
+    deepwisdom.models.deployment
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#deepwisdom.models.deployment.Deployment" class="md-nav__link">
+    Deployment
+  </a>
+  
+    <nav class="md-nav" aria-label="Deployment">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#deepwisdom.models.deployment.Deployment.call_service" class="md-nav__link">
+    call_service()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#deepwisdom.models.deployment.Deployment.create_deployment" class="md-nav__link">
+    create_deployment()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#deepwisdom.models.deployment.Deployment.delete_deployments" class="md-nav__link">
+    delete_deployments()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#deepwisdom.models.deployment.Deployment.get_deployment_detail" class="md-nav__link">
+    get_deployment_detail()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#deepwisdom.models.deployment.Deployment.get_deployment_log" class="md-nav__link">
+    get_deployment_log()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#deepwisdom.models.deployment.Deployment.get_service" class="md-nav__link">
+    get_service()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#deepwisdom.models.deployment.Deployment.get_service_api" class="md-nav__link">
+    get_service_api()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#deepwisdom.models.deployment.Deployment.get_service_status" class="md-nav__link">
+    get_service_status()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#deepwisdom.models.deployment.Deployment.list_deployments" class="md-nav__link">
+    list_deployments()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#deepwisdom.models.deployment.Deployment.rename_deployment" class="md-nav__link">
+    rename_deployment()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#deepwisdom.models.deployment.Deployment.resident_deployment" class="md-nav__link">
+    resident_deployment()
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#deepwisdom.models.deployment.DeploymentListMember" class="md-nav__link">
+    DeploymentListMember
+  </a>
+  
+    <nav class="md-nav" aria-label="DeploymentListMember">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#deepwisdom.models.deployment.DeploymentListMember.get_deployment_detail" class="md-nav__link">
+    get_deployment_detail()
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#deepwisdom.models.deployment.ServiceApiInfo" class="md-nav__link">
+    ServiceApiInfo
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../model/" class="md-nav__link">
+        Model
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../offline_prediction/" class="md-nav__link">
+        Offline prediction
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../project/" class="md-nav__link">
+        Project
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../solution/" class="md-nav__link">
+        Solution
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../trial/" class="md-nav__link">
+        Trial
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3" type="checkbox" id="__nav_3" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_3">
+          Examples
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Examples" data-md-level="1">
+        <label class="md-nav__title" for="__nav_3">
+          <span class="md-nav__icon md-icon"></span>
+          Examples
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../examples/examples/" class="md-nav__link">
+        Examples
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_4" type="checkbox" id="__nav_4" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_4">
+          Tutorials
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Tutorials" data-md-level="1">
+        <label class="md-nav__title" for="__nav_4">
+          <span class="md-nav__icon md-icon"></span>
+          Tutorials
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../tutorials/data/" class="md-nav__link">
+        数据(Dataset)
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../tutorials/deployment/" class="md-nav__link">
+        推理服务
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../tutorials/offline_prediction/" class="md-nav__link">
+        离线预测
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../tutorials/project/" class="md-nav__link">
+        项目(Project)
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#deepwisdom.models.deployment" class="md-nav__link">
+    deepwisdom.models.deployment
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#deepwisdom.models.deployment.Deployment" class="md-nav__link">
+    Deployment
+  </a>
+  
+    <nav class="md-nav" aria-label="Deployment">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#deepwisdom.models.deployment.Deployment.call_service" class="md-nav__link">
+    call_service()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#deepwisdom.models.deployment.Deployment.create_deployment" class="md-nav__link">
+    create_deployment()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#deepwisdom.models.deployment.Deployment.delete_deployments" class="md-nav__link">
+    delete_deployments()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#deepwisdom.models.deployment.Deployment.get_deployment_detail" class="md-nav__link">
+    get_deployment_detail()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#deepwisdom.models.deployment.Deployment.get_deployment_log" class="md-nav__link">
+    get_deployment_log()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#deepwisdom.models.deployment.Deployment.get_service" class="md-nav__link">
+    get_service()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#deepwisdom.models.deployment.Deployment.get_service_api" class="md-nav__link">
+    get_service_api()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#deepwisdom.models.deployment.Deployment.get_service_status" class="md-nav__link">
+    get_service_status()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#deepwisdom.models.deployment.Deployment.list_deployments" class="md-nav__link">
+    list_deployments()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#deepwisdom.models.deployment.Deployment.rename_deployment" class="md-nav__link">
+    rename_deployment()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#deepwisdom.models.deployment.Deployment.resident_deployment" class="md-nav__link">
+    resident_deployment()
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#deepwisdom.models.deployment.DeploymentListMember" class="md-nav__link">
+    DeploymentListMember
+  </a>
+  
+    <nav class="md-nav" aria-label="DeploymentListMember">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#deepwisdom.models.deployment.DeploymentListMember.get_deployment_detail" class="md-nav__link">
+    get_deployment_detail()
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#deepwisdom.models.deployment.ServiceApiInfo" class="md-nav__link">
+    ServiceApiInfo
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content" data-md-component="content">
+            <article class="md-content__inner md-typeset">
+              
+                
+
+  <h1>Deployment</h1>
+
+<div class="doc doc-object doc-module">
+
+<a id="deepwisdom.models.deployment"></a>
+    <div class="doc doc-contents first">
+
+      <p>推理服务部署</p>
+<p>通过 get_deployment_detail 可以快速返回一个deployment对象，而不必直接实例化 Deployment(...)</p>
+<pre><code>调用服务: 
+        deploy = Deployment.get_service(200)
+        print(deploy.call_service({}))
+---
+获取服务列表: 
+        deploys = Deployment.list_deployments(3976)
+        for deploy in deploys:
+            detail = deploy.get_deployment_detail()
+        print(deploys)
+---
+修复服务名称:
+        deploy = Deployment.rename_deployment(deploy_id, &quot;猪八戒吃了唐僧&quot;)
+</code></pre>
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+  <div class="doc doc-object doc-class">
+
+
+
+<h2 id="deepwisdom.models.deployment.Deployment" class="doc doc-heading">
+        <code>
+Deployment            (<span title="deepwisdom.models.api_object.APIObject">APIObject</span>)
+        </code>
+
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-dataclass"><code>dataclass</code></small>
+  </span>
+
+</h2>
+
+    <div class="doc doc-contents ">
+
+      <p>Deployment(id: int = 0, project_id: int = 0, user_id: int = 0, name: str = '', service_name: str = '', model_inst_id: int = 0, serverless_infer_id: int = 0, deploy_model: str = '', route_path: str = '', token: str = '', token_url: str = '', status: int = 0, infer_lock: int = 0, min_pod: int = 0, max_pod: int = 0, create_time: str = '', update_time: str = '', deploy_time: str = '', is_del: int = 0)</p>
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h3 id="deepwisdom.models.deployment.Deployment.call_service" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">call_service</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span></code>
+
+
+</h3>
+
+    <div class="doc doc-contents ">
+
+      <p>调用服务</p>
+
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>data</code></td>
+        <td><code>Any</code></td>
+        <td><p>服务调用入参，get_service_api()可以返回demo</p></td>
+        <td><em>required</em></td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>Returns:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>Any</code></td>
+      <td><p>响应body，get_service_api()可以返回demo</p></td>
+    </tr>
+  </tbody>
+</table>
+        <details class="quote">
+          <summary>Source code in <code>deepwisdom/models/deployment.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">call_service</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;调用服务</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        data (Any): 服务调用入参，get_service_api()可以返回demo</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        Any: 响应body，get_service_api()可以返回demo</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">header</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;Authorization&quot;</span><span class="p">:</span> <span class="s2">&quot;Bearer  </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">token</span><span class="p">)</span>
+    <span class="p">}</span>
+    <span class="n">rsp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">raw_request</span><span class="p">(</span>
+        <span class="s2">&quot;post&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">token_url</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">header</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">rsp</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h3 id="deepwisdom.models.deployment.Deployment.create_deployment" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">create_deployment</span><span class="p">(</span><span class="n">options</span><span class="p">)</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-classmethod"><code>classmethod</code></small>
+  </span>
+
+</h3>
+
+    <div class="doc doc-contents ">
+
+      <p>创建服务</p>
+
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>options</code></td>
+        <td><code>CreateDeployRequest</code></td>
+        <td><p>服务创建请求参数</p></td>
+        <td><em>required</em></td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>Returns:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>[Deployment]</code></td>
+      <td><p>返回具体的服务对象</p></td>
+    </tr>
+  </tbody>
+</table>
+        <details class="quote">
+          <summary>Source code in <code>deepwisdom/models/deployment.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="nd">@classmethod</span>
+<span class="k">def</span> <span class="nf">create_deployment</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">options</span><span class="p">:</span> <span class="n">CreateDeployRequest</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;Deployment&quot;</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;创建服务</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        options (CreateDeployRequest): 服务创建请求参数</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        [Deployment]: 返回具体的服务对象</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">data</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">options</span><span class="p">)</span>
+    <span class="n">rsp</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">_post</span><span class="p">(</span><span class="n">API_URL</span><span class="o">.</span><span class="n">DEPLOY_CREATE_SERVICE</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+    <span class="k">if</span> <span class="s2">&quot;data&quot;</span> <span class="ow">in</span> <span class="n">rsp</span> <span class="ow">and</span> <span class="s2">&quot;ret&quot;</span> <span class="ow">in</span> <span class="n">rsp</span><span class="p">[</span><span class="s2">&quot;data&quot;</span><span class="p">]</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">rsp</span><span class="p">[</span><span class="s2">&quot;data&quot;</span><span class="p">][</span><span class="s2">&quot;ret&quot;</span><span class="p">])</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">from_server_data</span><span class="p">(</span><span class="n">rsp</span><span class="p">[</span><span class="s1">&#39;data&#39;</span><span class="p">][</span><span class="s2">&quot;ret&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span>
+    <span class="k">return</span> <span class="kc">None</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h3 id="deepwisdom.models.deployment.Deployment.delete_deployments" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">delete_deployments</span><span class="p">(</span><span class="n">service_ids</span><span class="p">)</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-classmethod"><code>classmethod</code></small>
+  </span>
+
+</h3>
+
+    <div class="doc doc-contents ">
+
+      <p>删除服务</p>
+
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>service_ids</code></td>
+        <td><code>int64</code></td>
+        <td><p>服务id</p></td>
+        <td><em>required</em></td>
+      </tr>
+  </tbody>
+</table>
+        <details class="quote">
+          <summary>Source code in <code>deepwisdom/models/deployment.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="nd">@classmethod</span>
+<span class="k">def</span> <span class="nf">delete_deployments</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">service_ids</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;删除服务</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        service_ids (int64): 服务id</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;svc_ids&quot;</span><span class="p">:</span> <span class="n">service_ids</span>
+    <span class="p">}</span>
+    <span class="n">rsp</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">_delete</span><span class="p">(</span><span class="n">API_URL</span><span class="o">.</span><span class="n">DEPLOY_DELETE_DEPLOYMENT</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">rsp</span><span class="p">[</span><span class="s1">&#39;code&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">200</span> <span class="ow">and</span> <span class="n">rsp</span><span class="p">[</span><span class="s1">&#39;message&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;ok&#39;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">True</span>
+    <span class="k">return</span> <span class="kc">False</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h3 id="deepwisdom.models.deployment.Deployment.get_deployment_detail" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">get_deployment_detail</span><span class="p">(</span><span class="n">service_id</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-classmethod"><code>classmethod</code></small>
+  </span>
+
+</h3>
+
+    <div class="doc doc-contents ">
+
+      <p>获取服务详情</p>
+
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>service_id</code></td>
+        <td><code>int</code></td>
+        <td><p>服务id</p></td>
+        <td><em>required</em></td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>Returns:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>Deployment</code></td>
+      <td><p>服务详情</p></td>
+    </tr>
+  </tbody>
+</table>
+        <details class="quote">
+          <summary>Source code in <code>deepwisdom/models/deployment.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="nd">@classmethod</span>
+<span class="k">def</span> <span class="nf">get_deployment_detail</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">service_id</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;Deployment&quot;</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;获取服务详情</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        service_id (int): 服务id</span>
+<span class="sd">    Returns:</span>
+<span class="sd">        Deployment: 服务详情</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;service_id&quot;</span><span class="p">:</span> <span class="n">service_id</span>
+    <span class="p">}</span>
+    <span class="n">rsp</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_server_data</span><span class="p">(</span><span class="n">API_URL</span><span class="o">.</span><span class="n">DEPLOY_GET_SERVICE_DETAIL</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">rsp</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">from_server_data</span><span class="p">(</span><span class="n">rsp</span><span class="p">)</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h3 id="deepwisdom.models.deployment.Deployment.get_deployment_log" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">get_deployment_log</span><span class="p">(</span><span class="n">svc_id</span><span class="p">)</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-classmethod"><code>classmethod</code></small>
+  </span>
+
+</h3>
+
+    <div class="doc doc-contents ">
+
+      <p>获取服务日志</p>
+
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>svc_id</code></td>
+        <td><code>int</code></td>
+        <td><p>服务id</p></td>
+        <td><em>required</em></td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>Returns:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>str</code></td>
+      <td><p>日志内容</p></td>
+    </tr>
+  </tbody>
+</table>
+        <details class="quote">
+          <summary>Source code in <code>deepwisdom/models/deployment.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="nd">@classmethod</span>
+<span class="k">def</span> <span class="nf">get_deployment_log</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">svc_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;获取服务日志</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        svc_id (int): 服务id</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        str: 日志内容</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;service_id&quot;</span><span class="p">:</span> <span class="n">svc_id</span>
+    <span class="p">}</span>
+    <span class="n">rsp</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">_get</span><span class="p">(</span><span class="n">API_URL</span><span class="o">.</span><span class="n">DEPLOY_GET_DEPLOYMENT_LOG</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+    <span class="k">if</span> <span class="s2">&quot;data&quot;</span> <span class="ow">in</span> <span class="n">rsp</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">rsp</span><span class="p">[</span><span class="s1">&#39;data&#39;</span><span class="p">]</span>
+    <span class="k">return</span> <span class="kc">None</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h3 id="deepwisdom.models.deployment.Deployment.get_service" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">get_service</span><span class="p">(</span><span class="n">service_id</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-classmethod"><code>classmethod</code></small>
+  </span>
+
+</h3>
+
+    <div class="doc doc-contents ">
+
+      <p>获取服务详情</p>
+
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>service_id</code></td>
+        <td><code>int</code></td>
+        <td><p>服务id</p></td>
+        <td><em>required</em></td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>Returns:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>Deployment</code></td>
+      <td><p>服务详情</p></td>
+    </tr>
+  </tbody>
+</table>
+        <details class="quote">
+          <summary>Source code in <code>deepwisdom/models/deployment.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="nd">@classmethod</span>
+<span class="k">def</span> <span class="nf">get_service</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">service_id</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;Deployment&quot;</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;获取服务详情</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        service_id (int): 服务id</span>
+<span class="sd">    Returns:</span>
+<span class="sd">        Deployment: 服务详情</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;service_id&quot;</span><span class="p">:</span> <span class="n">service_id</span>
+    <span class="p">}</span>
+    <span class="n">rsp</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_server_data</span><span class="p">(</span><span class="n">API_URL</span><span class="o">.</span><span class="n">DEPLOY_GET_SERVICE_DETAIL</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+    <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">from_server_data</span><span class="p">(</span><span class="n">rsp</span><span class="p">)</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h3 id="deepwisdom.models.deployment.Deployment.get_service_api" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">get_service_api</span><span class="p">(</span><span class="n">svc_id</span><span class="p">)</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-classmethod"><code>classmethod</code></small>
+  </span>
+
+</h3>
+
+    <div class="doc doc-contents ">
+
+      <p>获取服务api</p>
+
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>svc_id</code></td>
+        <td><code>int</code></td>
+        <td><p>服务id</p></td>
+        <td><em>required</em></td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>Returns:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>ServiceApiInfo</code></td>
+      <td><p>api详情</p></td>
+    </tr>
+  </tbody>
+</table>
+        <details class="quote">
+          <summary>Source code in <code>deepwisdom/models/deployment.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="nd">@classmethod</span>
+<span class="k">def</span> <span class="nf">get_service_api</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">svc_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ServiceApiInfo</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;获取服务api</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        svc_id (int): 服务id</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        ServiceApiInfo: api详情</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;svc_id&quot;</span><span class="p">:</span> <span class="n">svc_id</span>
+    <span class="p">}</span>
+    <span class="n">rsp</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">_get</span><span class="p">(</span><span class="n">API_URL</span><span class="o">.</span><span class="n">DEPLOY_GET_SERVICE_API</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+    <span class="k">if</span> <span class="s2">&quot;data&quot;</span> <span class="ow">in</span> <span class="n">rsp</span><span class="p">:</span>
+        <span class="n">checked</span> <span class="o">=</span> <span class="n">ServiceApiInfo</span><span class="o">.</span><span class="n">_converter</span><span class="o">.</span><span class="n">check</span><span class="p">(</span><span class="n">rsp</span><span class="p">[</span><span class="s1">&#39;data&#39;</span><span class="p">])</span>
+        <span class="n">filtered</span> <span class="o">=</span> <span class="n">Deployment</span><span class="o">.</span><span class="n">_filter_data</span><span class="p">(</span><span class="n">checked</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">ServiceApiInfo</span><span class="p">(</span><span class="o">**</span><span class="n">filtered</span><span class="p">)</span>
+    <span class="k">return</span> <span class="kc">None</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h3 id="deepwisdom.models.deployment.Deployment.get_service_status" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">get_service_status</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></code>
+
+
+</h3>
+
+    <div class="doc doc-contents ">
+
+      <p>获取服务状态</p>
+
+<p><strong>Returns:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>Int</code></td>
+      <td><p>服务状态：1-创建，2-调度中，3-调度成功，4-执行中，5-创建失败，6-挂起，7-取消，8-删除中，9- 已删除</p></td>
+    </tr>
+  </tbody>
+</table>
+        <details class="quote">
+          <summary>Source code in <code>deepwisdom/models/deployment.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">get_service_status</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Int</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;获取服务状态</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        Int: 服务状态：1-创建，2-调度中，3-调度成功，4-执行中，5-创建失败，6-挂起，7-取消，8-删除中，9- 已删除</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">get_deployment_detail</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">status</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h3 id="deepwisdom.models.deployment.Deployment.list_deployments" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">list_deployments</span><span class="p">(</span><span class="n">project_id</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-classmethod"><code>classmethod</code></small>
+  </span>
+
+</h3>
+
+    <div class="doc doc-contents ">
+
+      <p>获取服务部署列表</p>
+
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>project_id</code></td>
+        <td><code>int</code></td>
+        <td><p>项目id</p></td>
+        <td><em>required</em></td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>Returns:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>List[DeploymentListMember]</code></td>
+      <td><p>服务列表</p></td>
+    </tr>
+  </tbody>
+</table>
+        <details class="quote">
+          <summary>Source code in <code>deepwisdom/models/deployment.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="nd">@classmethod</span>
+<span class="k">def</span> <span class="nf">list_deployments</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">project_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="s2">&quot;DeploymentListMember&quot;</span><span class="p">]:</span>
+    <span class="sd">&quot;&quot;&quot;获取服务部署列表</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        project_id (int): 项目id</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        List[DeploymentListMember]: 服务列表</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;project_id&quot;</span><span class="p">:</span> <span class="n">project_id</span>
+    <span class="p">}</span>
+    <span class="n">server_data</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_server_data</span><span class="p">(</span><span class="n">API_URL</span><span class="o">.</span><span class="n">DEPLOY_LIST_DEPLOYMENTS</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+    <span class="c1"># return [cls.get_deployment_detail(item[&quot;service_id&quot;]) for item in server_data]</span>
+    <span class="k">return</span> <span class="p">[</span><span class="n">DeploymentListMember</span><span class="p">(</span><span class="o">**</span><span class="n">item</span><span class="p">)</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">server_data</span><span class="p">]</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h3 id="deepwisdom.models.deployment.Deployment.rename_deployment" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">rename_deployment</span><span class="p">(</span><span class="n">svc_id</span><span class="p">,</span> <span class="n">svc_name</span><span class="p">)</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-classmethod"><code>classmethod</code></small>
+  </span>
+
+</h3>
+
+    <div class="doc doc-contents ">
+
+      <p>重命名服务</p>
+
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>svc_id</code></td>
+        <td><code>int</code></td>
+        <td><p>服务id</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>svc_name</code></td>
+        <td><code>str</code></td>
+        <td><p>新服务名称</p></td>
+        <td><em>required</em></td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>Returns:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>Deployment</code></td>
+      <td><p>服务详情</p></td>
+    </tr>
+  </tbody>
+</table>
+        <details class="quote">
+          <summary>Source code in <code>deepwisdom/models/deployment.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="nd">@classmethod</span>
+<span class="k">def</span> <span class="nf">rename_deployment</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">svc_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">svc_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;重命名服务</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        svc_id (int): 服务id</span>
+<span class="sd">        svc_name (str): 新服务名称</span>
+<span class="sd">    Returns:</span>
+<span class="sd">        Deployment: 服务详情</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;svc_id&quot;</span><span class="p">:</span> <span class="n">svc_id</span><span class="p">,</span>
+        <span class="s2">&quot;svc_name&quot;</span><span class="p">:</span> <span class="n">svc_name</span>
+    <span class="p">}</span>
+    <span class="n">rsp</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">_patch</span><span class="p">(</span><span class="n">API_URL</span><span class="o">.</span><span class="n">DEPLOY_RENAME_DEPLOYMENT</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">rsp</span><span class="p">[</span><span class="s1">&#39;code&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">200</span> <span class="ow">and</span> <span class="n">rsp</span><span class="p">[</span><span class="s1">&#39;message&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;ok&#39;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">get_deployment_detail</span><span class="p">(</span><span class="n">svc_id</span><span class="p">)</span>
+    <span class="k">return</span> <span class="kc">None</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h3 id="deepwisdom.models.deployment.Deployment.resident_deployment" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">resident_deployment</span><span class="p">(</span><span class="n">svc_id</span><span class="p">,</span> <span class="n">min_pod</span><span class="p">)</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-classmethod"><code>classmethod</code></small>
+  </span>
+
+</h3>
+
+    <div class="doc doc-contents ">
+
+      <p>切换服务常驻状态</p>
+
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>svc_id</code></td>
+        <td><code>int64</code></td>
+        <td><p>服务id</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>min_pod</code></td>
+        <td><code>int</code></td>
+        <td><p>最少pod数，大于0为服务常驻，等于0为非常驻</p></td>
+        <td><em>required</em></td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>Returns:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>Deployment</code></td>
+      <td><p>服务详情</p></td>
+    </tr>
+  </tbody>
+</table>
+        <details class="quote">
+          <summary>Source code in <code>deepwisdom/models/deployment.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="nd">@classmethod</span>
+<span class="k">def</span> <span class="nf">resident_deployment</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">svc_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">min_pod</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;切换服务常驻状态</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        svc_id (int64): 服务id</span>
+<span class="sd">        min_pod (int): 最少pod数，大于0为服务常驻，等于0为非常驻</span>
+<span class="sd">    Returns:</span>
+<span class="sd">        Deployment: 服务详情</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;svc_id&quot;</span><span class="p">:</span> <span class="n">svc_id</span><span class="p">,</span>
+        <span class="s2">&quot;min_pod&quot;</span><span class="p">:</span> <span class="n">min_pod</span>
+    <span class="p">}</span>
+    <span class="n">rsp</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">_post</span><span class="p">(</span><span class="n">API_URL</span><span class="o">.</span><span class="n">DEPLOY_RESIDENT_DEPLOYMENT</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">rsp</span><span class="p">[</span><span class="s1">&#39;code&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">200</span> <span class="ow">and</span> <span class="n">rsp</span><span class="p">[</span><span class="s1">&#39;message&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;ok&#39;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">get_deployment_detail</span><span class="p">(</span><span class="n">svc_id</span><span class="p">)</span>
+    <span class="k">return</span> <span class="kc">None</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+
+
+  </div>
+
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-class">
+
+
+
+<h2 id="deepwisdom.models.deployment.DeploymentListMember" class="doc doc-heading">
+        <code>
+DeploymentListMember            (<span title="deepwisdom.models.api_object.APIObject">APIObject</span>)
+        </code>
+
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-dataclass"><code>dataclass</code></small>
+  </span>
+
+</h2>
+
+    <div class="doc doc-contents ">
+
+      <p>DeploymentListMember(service_id: int = 0, service_name: str = '', min_pod: int = 0, model_name: str = '', trial_no: int = 0, trial_type: int = 0, recom_model: str = '', eval_metric: trafaret.base.Any = '', service_status: int = 0, service_create_time: str = '')</p>
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h3 id="deepwisdom.models.deployment.DeploymentListMember.get_deployment_detail" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">get_deployment_detail</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></code>
+
+
+</h3>
+
+    <div class="doc doc-contents ">
+
+      <p>获取服务详情</p>
+
+<p><strong>Returns:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>Deployment</code></td>
+      <td><p>服务详情</p></td>
+    </tr>
+  </tbody>
+</table>
+        <details class="quote">
+          <summary>Source code in <code>deepwisdom/models/deployment.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">get_deployment_detail</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;Deployment&quot;</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;获取服务详情</span>
+<span class="sd">    Returns:</span>
+<span class="sd">        Deployment: 服务详情</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;service_id&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">service_id</span>
+    <span class="p">}</span>
+    <span class="n">rsp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">_get</span><span class="p">(</span><span class="n">API_URL</span><span class="o">.</span><span class="n">DEPLOY_GET_SERVICE_DETAIL</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+    <span class="k">if</span> <span class="s2">&quot;data&quot;</span> <span class="ow">in</span> <span class="n">rsp</span><span class="p">:</span>
+        <span class="n">checked</span> <span class="o">=</span> <span class="n">Deployment</span><span class="o">.</span><span class="n">_converter</span><span class="o">.</span><span class="n">check</span><span class="p">(</span><span class="n">rsp</span><span class="p">[</span><span class="s1">&#39;data&#39;</span><span class="p">])</span>
+        <span class="n">filtered</span> <span class="o">=</span> <span class="n">Deployment</span><span class="o">.</span><span class="n">_filter_data</span><span class="p">(</span><span class="n">checked</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">Deployment</span><span class="p">(</span><span class="o">**</span><span class="n">filtered</span><span class="p">)</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+
+
+  </div>
+
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-class">
+
+
+
+<h2 id="deepwisdom.models.deployment.ServiceApiInfo" class="doc doc-heading">
+        <code>
+ServiceApiInfo            (<span title="deepwisdom.models.api_object.APIObject">APIObject</span>)
+        </code>
+
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-dataclass"><code>dataclass</code></small>
+  </span>
+
+</h2>
+
+    <div class="doc doc-contents ">
+
+      <p>ServiceApiInfo(http_type: str = '', token: str = '', url: str = '', post_example: trafaret.base.Any = '', data_example: trafaret.base.Any = '', response_example: trafaret.base.Any = None)</p>
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+  </div>
+
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+  </div>
+
+              
+            </article>
+          </div>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    <nav class="md-footer__inner md-grid" aria-label="Footer">
+      
+        
+        <a href="../dataset/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Dataset" rel="prev">
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+          </div>
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              Dataset
+            </div>
+          </div>
+        </a>
+      
+      
+        
+        <a href="../model/" class="md-footer__link md-footer__link--next" aria-label="Next: Model" rel="next">
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              Model
+            </div>
+          </div>
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4z"/></svg>
+          </div>
+        </a>
+      
+    </nav>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    <script id="__config" type="application/json">{"base": "../..", "features": [], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "search": "../../assets/javascripts/workers/search.0bbba5b5.min.js"}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.649a939e.min.js"></script>
+      
+    
+  </body>
+</html>
