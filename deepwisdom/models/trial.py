@@ -70,7 +70,7 @@ _performance_metric_converter = t.Dict(
     {
         t.Key("FPS", optional=True) >> "fps": t.Float,
         t.Key("ICT", optional=True) >> "ict": t.Float,
-        t.Key("FLOPs", optional=True) >> "flops": t.Int,
+        t.Key("FLOPs", optional=True) >> "flops": t.Float,
         t.Key("MaxMem", optional=True) >> "max_mem": t.Float
 
     }

@@ -3,7 +3,9 @@ import json
 import logging
 import os
 import time
+import string
 from io import BytesIO
+from dataclasses import dataclass
 
 import trafaret as t
 import deepwisdom.errors as err
@@ -11,6 +13,8 @@ import deepwisdom.errors as err
 from deepwisdom._compat import Int, String
 from .api_object import APIObject
 from deepwisdom.enums import API_URL
+import numpy as np
+import pandas as pd
 
 
 def _get_upload_id(file_path):
@@ -27,9 +31,9 @@ _base_dataset_schema = t.Dict(
     {
         t.Key("dataset_id"): Int,
         t.Key("dataset_name", optional=True): String,
-        t.Key("create_time"): String,
-        t.Key("file_size"): Int,
-        t.Key("file_type"): Int,
+        t.Key("create_time", optional=True): String,
+        t.Key("file_size", optional=True): Int,
+        t.Key("file_type", optional=True): Int,
     }
 )
 
@@ -92,13 +96,53 @@ class Dataset(APIObject):
         return [Dataset(**data) for data in init_data]
 
     @classmethod
+    def create_from_data_source(
+            cls,
+            conn_info: string,
+            cloud_type: int,
+            source: int,
+            chosed_tables: string
+    ):
+        """
+        目前支持从mysql导入创建
+        Args:
+            conn_info (json字符串): mysql的连接信息。 mysql: {"host":"xxx","port":"3306","user":"xx","password":"xxx","db":"","encoding":"utf8","passwordCustom":"xx"}
+            cloud_type (int): 云类型: 0本地, 1Amazon, 2阿里云, 3腾讯云, 4华为云
+            source (int):  数据来源: 0本地文件, 1mysql, 2oracle, 3mariadb, 4hdfs, 5hive
+            chosed_tables (json字符):  选择的table 列表。 [{"autotables":[{"table_name":"dataset_update_record"}]}]
+
+        Returns:
+            数据集对象数组， 每个表对应一个数据集对象
+        """
+        data = {
+            "conn_info": conn_info,
+            "cloud_type": cloud_type,
+            "source": source,
+            "choosed_tables": chosed_tables
+        }
+
+        resp = cls._client._post(API_URL.DATASET_SUMMIT, data)
+        if resp["code"] != 200 or "data" in resp and "ret" in resp["data"] and resp["data"]["ret"] != 1:
+            raise err.ServerError(resp, resp["code"])
+
+        table_map = resp["data"]["table_map"]
+
+        datasets = []
+        for dataset_id in table_map:
+            data = {
+                "dataset_id": dataset_id
+            }
+            server_data = cls._server_data(API_URL.DATASET_INFO, data)
+            datasets.append(cls.from_server_data(server_data))
+
+        return datasets
+
+    @classmethod
     def create_from_file(
         cls,
         filename: str = None,
         model_type: int = None,
-        annotation_type: int = 1,
         dataset_scene_id: int = 1,
-        sep: str = "\\t",
         max_chunk_size: int = 10*1024*1024
     ):
         """
@@ -106,17 +150,14 @@ class Dataset(APIObject):
         Args:
             filename: 本地数据集的绝对路径
             model_type: 模态类型。 0CSV,1VIDEO,2IMAGE,3SPEECH,4TEXT
-            annotation_type: 标注类型。默认已标注1
             dataset_scene_id: 场景id。默认1 枚举
-            sep: 表格分隔符。 枚举
             max_chunk_size: 分片上传的大小
 
         Returns:
             Dataset
         """
 
-        dataset_id, msg = cls.dataset_upload(filename, model_type, annotation_type,
-                                             dataset_scene_id, sep, max_chunk_size)
+        dataset_id, msg = cls.dataset_upload(filename, model_type, dataset_scene_id, max_chunk_size)
         if dataset_id < 0:
             logging.info(msg)
             raise err.UploadTrainDataError
@@ -146,9 +187,7 @@ class Dataset(APIObject):
         cls,
         file_path: str,
         model_type: int,
-        annotation_type: int,
         dataset_scene_id: int,
-        sep: str,
         max_chunk_size: int
     ):
         """
@@ -156,9 +195,7 @@ class Dataset(APIObject):
         Args:
             file_path:
             model_type:
-            annotation_type:
             dataset_scene_id:
-            sep:
             max_chunk_size:
 
         Returns:
@@ -214,8 +251,6 @@ class Dataset(APIObject):
         dataset_deal_data["upload_id"] = upload_id
         dataset_deal_data["chunk_id_list"] = json.dumps(chunk_id_list)
         dataset_deal_data["modal_type"] = model_type
-        dataset_deal_data["sep"] = sep
-        dataset_deal_data["annotation_type"] = annotation_type
         # 场景Id， 二分等
         dataset_deal_data["dataset_scene_id"] = dataset_scene_id
 
@@ -259,6 +294,35 @@ class Dataset(APIObject):
         }
 
         cls._client._patch(API_URL.DATASET_MODIFY, data)
+
+    def get_eda(self):
+        """
+        获取数据集的eda
+        Returns:
+            pandas.DataFrame
+
+        """
+        data = {
+            "dataset_id": self.dataset_id
+        }
+
+        server_data = self._server_data(API_URL.DATASET_EDA, data)
+        return pd.DataFrame(data=server_data["data"], columns=server_data["columns"], index=server_data["index"])
+
+    def modify_eda(self, eda: pd.DataFrame):
+        """
+        修改数据集的eda
+        Args:
+            eda (pandas.DataFrame):
+
+        Returns:
+
+        """
+        data = {
+            "dataset_id": self.dataset_id,
+            "eda": eda.to_json(orient='split')
+        }
+        self._client._patch(API_URL.DATASET_EDA, data)
 
 
 class PredictDataset(APIObject):

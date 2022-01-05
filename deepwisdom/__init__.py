@@ -11,5 +11,6 @@ from .models import (
     Project,
     TableRelation,
     AdvanceSetting,
-    TrainSetting
+    TrainSetting,
+    SearchSpace
 )

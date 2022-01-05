@@ -48,11 +48,79 @@ class AdvanceSetting(dict):
     optimizer: string = None
     random_seed: int = None
     target_train: TrainSetting = None
+    search_space: List = None
 
     def __setattr__(self, k, v):
         if k in self.__dataclass_fields__:
             self[k] = v
         super().__setattr__(k, v)
+
+
+class SearchSpace(APIObject):
+    """
+
+    """
+    def __init__(
+            self,
+            search_space_id: int,
+            search_space_info: List
+    ):
+        """
+        搜索空间类
+        Args:
+            search_space_id (int):
+            search_space_info (List): 搜索空间详情，如[{'hp_subspace': 'feature_engineering', 'desc': '自动特征工程算子', 'hp_values': {'KeyTimeBinSecond': {'hp_type': 'bool', 'hp_values': [True, False], 'desc': '按秒区间量化时间差'}, 'KeyTimeBinMsecond': {'hp_type': 'bool', 'hp_values': [True, False], 'desc': '按毫秒区间量化时间差'}, 'KeyTimeWeekday': {'hp_type': 'bool', 'hp_values': [True, False], 'desc': '时间戳星期'}, 'KeyTimeHour': {'hp_type': 'bool', 'hp_values': [True, False], 'desc': '时间戳小时'}, 'KeyTimeDay': {'hp_type': 'bool', 'hp_values': [True, False], 'desc': '时间戳天数'}, 'KeyTimeMonth': {'hp_type': 'bool', 'hp_values': [True, False], 'desc': '时间戳月份'}, 'KeyTimeYear': {'hp_type': 'bool', 'hp_values': [True, False], 'desc': '时间戳年份'}, 'KeyNumDiff': {'hp_type': 'bool', 'hp_values': [True, False], 'desc': '间隔数量差'}, 'KeyTimeDiff_BW_Window_1': {'hp_type': 'bool', 'hp_values': [True, False], 'desc': '一个间隔时间差'}, 'KeyTimeDiff_FW_Window_10': {'hp_type': 'bool', 'hp_values': [True, False], 'desc': '十个间隔时间差'}, 'McCatRank': {'hp_type': 'bool', 'hp_values': [True, False], 'desc': '多类别排序'}, 'McMcInnerLen': {'hp_type': 'bool', 'hp_values': [True, False], 'desc': '多类别交集长度'}, 'GroupCntDivNunique': {'hp_type': 'bool', 'hp_values': [True, False], 'desc': '聚合类别分散度'}, 'CatCnt': {'hp_type': 'bool', 'hp_values': [True, False], 'desc': '类别计数'}, 'GroupMean': {'hp_type': 'bool', 'hp_values': [True, False], 'desc': '聚合平均'}, 'GroupMax': {'hp_type': 'bool', 'hp_values': [True, False], 'desc': '聚合最大'}, 'GroupMin': {'hp_type': 'bool', 'hp_values': [True, False], 'desc': '聚合最小'}, 'GroupStd': {'hp_type': 'bool', 'hp_values': [True, False], 'desc': '聚合标准差'}, 'GroupMeanMinusSelf': {'hp_type': 'bool', 'hp_values': [True, False], 'desc': '聚合平均减去当前值'}, 'GroupMaxMinusSelf': {'hp_type': 'bool', 'hp_values': [True, False], 'desc': '聚合最大减去当前值'}, 'GroupMinMinusSelf': {'hp_type': 'bool', 'hp_values': [True, False], 'desc': '聚合最小减去当前值'}, 'CatSegCtrOrigin': {'hp_type': 'bool', 'hp_values': [True, False], 'desc': '类别点击通过率'}}}, {'hp_subspace': 'modeling', 'desc': '模型超参算子', 'hp_values': {'model': {'hp_type': 'choice', 'hp_values': [{'hp_name': 'LIGHTGBM', 'learning_rate': {'hp_type': 'loguniform', 'hp_values': [0.005, 0.2], 'desc': '学习率'}, 'feature_fraction': {'hp_type': 'uniform', 'hp_values': [0.75, 1], 'desc': '特征选择比例'}, 'min_data_in_leaf': {'hp_type': 'randint', 'hp_values': [2, 30], 'desc': '叶子节点最小数据量'}, 'num_leaves': {'hp_type': 'randint', 'hp_values': [16, 96], 'desc': '叶子节点个数'}}, {'hp_name': 'CATBOOST', 'depth': {'hp_type': 'randint', 'hp_values': [5, 8], 'desc': '树的深度'}, 'l2_leaf_reg': {'hp_type': 'uniform', 'hp_values': [1, 5], 'desc': 'L2正则化'}}]}}}]
+        """
+
+        self.search_space_id = search_space_id
+        self.search_space_info = search_space_info
+
+    @classmethod
+    def create(cls, model_type: int, task_type: int):
+        """
+        获取指定任务模态的搜索空间
+        Args:
+            model_type (int): 模态类型：0表格，1视频，2图像，3音频，4文本
+            task_type (int): 任务类型。0二分类/分类,1多分类/检测/意图识别/匹配,2回归/定位/语音分离/序列,3时序/分隔
+
+        Returns:
+
+        """
+        data = {
+            "modal_type": model_type,
+            "task_type": task_type
+        }
+        server_data = cls._server_data(API_URL.PROJECT_MODEL_SS, data)
+        return cls(server_data["search_space_id"], server_data["search_space_info"])
+
+    def custom_model_hp(self, hp_names: List):
+        """
+        指定搜索空间的model
+        Args:
+            hp_names (List): 如["LIGHTGBM", "CATBOOST"]
+
+        Returns:
+
+        """
+        new_ss = list()
+        new_model_hp = list()
+        model_sub_ss = dict()
+        feature_sub_ss = dict()
+        for sub_ss in self.search_space_info:
+            if sub_ss["hp_subspace"] == "modeling":
+                model_sub_ss = sub_ss
+
+            if sub_ss["hp_subspace"] == "feature_engineering":
+                feature_sub_ss = sub_ss
+
+        for hp_obj in model_sub_ss["hp_values"]["model"]["hp_values"]:
+            if hp_obj["hp_name"] in hp_names:
+                new_model_hp.append(hp_obj)
+
+        model_sub_ss["hp_values"]["model"]["hp_values"] = new_model_hp
+        new_ss.extend((feature_sub_ss, model_sub_ss))
+
+        self.search_space_info = new_ss
 
 
 class Project(APIObject):
@@ -116,12 +184,16 @@ class Project(APIObject):
             table_relation=None,
             advance_settings: Optional[AdvanceSetting] = None,
             search_space_id=1,
-            icon='{"name": "IconBangong", "label": "办公"}'
+            icon='{"name": "IconBangong", "label": "办公"}',
+            time_size="day",
+            agg_cols=[]
 
     ):
         """
         从现有的数据集创建项目
         Args:
+            agg_cols (): 时间粒度："day","week","month","year"（表格类时序项目必须）
+            time_size (): 聚合列（表格类时序项目必须，用户没有选中列时为空数组）
             dataset_id (int): 数据集id
             name (str): 项目名
             model_type (int): 模态类型。 0CSV,1VIDEO,2IMAGE,3SPEECH,4TEXT
@@ -162,6 +234,8 @@ class Project(APIObject):
         proj_data["advance_settings"] = json.dumps(settings)
         proj_data["search_space_id"] = search_space_id
         proj_data["icon"] = icon
+        proj_data["time_size"] = time_size
+        proj_data["agg_cols"] = agg_cols
 
         resp = cls._client._post(API_URL.PROJECT_CREATE, proj_data)
         if resp["code"] != 200 or "data" in resp and "ret" in resp["data"] and resp["data"]["ret"] != 1:
@@ -192,18 +266,18 @@ class Project(APIObject):
         return cls.from_server_data(server_data)
 
     @classmethod
-    def delete(cls, proj_ids: list):
+    def delete(cls, proj_ids: List):
         """
 
         Args:
-            proj_ids (list):
+            proj_ids (List):
 
         Returns:
 
         """
 
         data = {
-            "project_id": proj_ids
+            "project_ids": proj_ids
         }
 
         cls._client._delete(API_URL.PROJECT_DELETE, data)

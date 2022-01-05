@@ -267,6 +267,13 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#deepwisdom.models.dataset.Dataset.create_from_data_source" class="md-nav__link">
+    create_from_data_source()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#deepwisdom.models.dataset.Dataset.create_from_file" class="md-nav__link">
     create_from_file()
   </a>
@@ -295,8 +302,22 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#deepwisdom.models.dataset.Dataset.get_eda" class="md-nav__link">
+    get_eda()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#deepwisdom.models.dataset.Dataset.modify_dataset" class="md-nav__link">
     modify_dataset()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#deepwisdom.models.dataset.Dataset.modify_eda" class="md-nav__link">
+    modify_eda()
   </a>
   
 </li>
@@ -583,6 +604,13 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#deepwisdom.models.dataset.Dataset.create_from_data_source" class="md-nav__link">
+    create_from_data_source()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#deepwisdom.models.dataset.Dataset.create_from_file" class="md-nav__link">
     create_from_file()
   </a>
@@ -611,8 +639,22 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#deepwisdom.models.dataset.Dataset.get_eda" class="md-nav__link">
+    get_eda()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#deepwisdom.models.dataset.Dataset.modify_dataset" class="md-nav__link">
     modify_dataset()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#deepwisdom.models.dataset.Dataset.modify_eda" class="md-nav__link">
+    modify_eda()
   </a>
   
 </li>
@@ -684,13 +726,133 @@ Dataset            (<span title="deepwisdom.models.api_object.APIObject">APIObje
 
 
 
+  <div class="doc doc-object doc-method">
+
+
+
+<h3 id="deepwisdom.models.dataset.Dataset.create_from_data_source" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">create_from_data_source</span><span class="p">(</span><span class="n">conn_info</span><span class="p">,</span> <span class="n">cloud_type</span><span class="p">,</span> <span class="n">source</span><span class="p">,</span> <span class="n">chosed_tables</span><span class="p">)</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-classmethod"><code>classmethod</code></small>
+  </span>
+
+</h3>
+
+    <div class="doc doc-contents ">
+
+      <p>目前支持从mysql导入创建</p>
+
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>conn_info</code></td>
+        <td><code>json字符串</code></td>
+        <td><p>mysql的连接信息。 mysql: {"host":"xxx","port":"3306","user":"xx","password":"xxx","db":"","encoding":"utf8","passwordCustom":"xx"}</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>cloud_type</code></td>
+        <td><code>int</code></td>
+        <td><p>云类型: 0本地, 1Amazon, 2阿里云, 3腾讯云, 4华为云</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>source</code></td>
+        <td><code>int</code></td>
+        <td><p>数据来源: 0本地文件, 1mysql, 2oracle, 3mariadb, 4hdfs, 5hive</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>chosed_tables</code></td>
+        <td><code>json字符</code></td>
+        <td><p>选择的table 列表。 [{"autotables":[{"table_name":"dataset_update_record"}]}]</p></td>
+        <td><em>required</em></td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>Returns:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td></td>
+      <td><p>数据集对象数组， 每个表对应一个数据集对象</p></td>
+    </tr>
+  </tbody>
+</table>
+        <details class="quote">
+          <summary>Source code in <code>deepwisdom/models/dataset.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="nd">@classmethod</span>
+<span class="k">def</span> <span class="nf">create_from_data_source</span><span class="p">(</span>
+        <span class="bp">cls</span><span class="p">,</span>
+        <span class="n">conn_info</span><span class="p">:</span> <span class="n">string</span><span class="p">,</span>
+        <span class="n">cloud_type</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+        <span class="n">source</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+        <span class="n">chosed_tables</span><span class="p">:</span> <span class="n">string</span>
+<span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    目前支持从mysql导入创建</span>
+<span class="sd">    Args:</span>
+<span class="sd">        conn_info (json字符串): mysql的连接信息。 mysql: {&quot;host&quot;:&quot;xxx&quot;,&quot;port&quot;:&quot;3306&quot;,&quot;user&quot;:&quot;xx&quot;,&quot;password&quot;:&quot;xxx&quot;,&quot;db&quot;:&quot;&quot;,&quot;encoding&quot;:&quot;utf8&quot;,&quot;passwordCustom&quot;:&quot;xx&quot;}</span>
+<span class="sd">        cloud_type (int): 云类型: 0本地, 1Amazon, 2阿里云, 3腾讯云, 4华为云</span>
+<span class="sd">        source (int):  数据来源: 0本地文件, 1mysql, 2oracle, 3mariadb, 4hdfs, 5hive</span>
+<span class="sd">        chosed_tables (json字符):  选择的table 列表。 [{&quot;autotables&quot;:[{&quot;table_name&quot;:&quot;dataset_update_record&quot;}]}]</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        数据集对象数组， 每个表对应一个数据集对象</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;conn_info&quot;</span><span class="p">:</span> <span class="n">conn_info</span><span class="p">,</span>
+        <span class="s2">&quot;cloud_type&quot;</span><span class="p">:</span> <span class="n">cloud_type</span><span class="p">,</span>
+        <span class="s2">&quot;source&quot;</span><span class="p">:</span> <span class="n">source</span><span class="p">,</span>
+        <span class="s2">&quot;choosed_tables&quot;</span><span class="p">:</span> <span class="n">chosed_tables</span>
+    <span class="p">}</span>
+
+    <span class="n">resp</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">_post</span><span class="p">(</span><span class="n">API_URL</span><span class="o">.</span><span class="n">DATASET_SUMMIT</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">resp</span><span class="p">[</span><span class="s2">&quot;code&quot;</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">200</span> <span class="ow">or</span> <span class="s2">&quot;data&quot;</span> <span class="ow">in</span> <span class="n">resp</span> <span class="ow">and</span> <span class="s2">&quot;ret&quot;</span> <span class="ow">in</span> <span class="n">resp</span><span class="p">[</span><span class="s2">&quot;data&quot;</span><span class="p">]</span> <span class="ow">and</span> <span class="n">resp</span><span class="p">[</span><span class="s2">&quot;data&quot;</span><span class="p">][</span><span class="s2">&quot;ret&quot;</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="n">err</span><span class="o">.</span><span class="n">ServerError</span><span class="p">(</span><span class="n">resp</span><span class="p">,</span> <span class="n">resp</span><span class="p">[</span><span class="s2">&quot;code&quot;</span><span class="p">])</span>
+
+    <span class="n">table_map</span> <span class="o">=</span> <span class="n">resp</span><span class="p">[</span><span class="s2">&quot;data&quot;</span><span class="p">][</span><span class="s2">&quot;table_map&quot;</span><span class="p">]</span>
+
+    <span class="n">datasets</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">dataset_id</span> <span class="ow">in</span> <span class="n">table_map</span><span class="p">:</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;dataset_id&quot;</span><span class="p">:</span> <span class="n">dataset_id</span>
+        <span class="p">}</span>
+        <span class="n">server_data</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_server_data</span><span class="p">(</span><span class="n">API_URL</span><span class="o">.</span><span class="n">DATASET_INFO</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+        <span class="n">datasets</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">from_server_data</span><span class="p">(</span><span class="n">server_data</span><span class="p">))</span>
+
+    <span class="k">return</span> <span class="n">datasets</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
 
   <div class="doc doc-object doc-method">
 
 
 
 <h3 id="deepwisdom.models.dataset.Dataset.create_from_file" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">create_from_file</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">model_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">annotation_type</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">dataset_scene_id</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\\</span><span class="s1">t&#39;</span><span class="p">,</span> <span class="n">max_chunk_size</span><span class="o">=</span><span class="mi">10485760</span><span class="p">)</span></code>
+<code class="highlight language-python"><span class="n">create_from_file</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">model_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">dataset_scene_id</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">max_chunk_size</span><span class="o">=</span><span class="mi">10485760</span><span class="p">)</span></code>
 
   <span class="doc doc-properties">
       <small class="doc doc-property doc-property-classmethod"><code>classmethod</code></small>
@@ -726,22 +888,10 @@ Dataset            (<span title="deepwisdom.models.api_object.APIObject">APIObje
         <td><code>None</code></td>
       </tr>
       <tr>
-        <td><code>annotation_type</code></td>
-        <td><code>int</code></td>
-        <td><p>标注类型。默认已标注1</p></td>
-        <td><code>1</code></td>
-      </tr>
-      <tr>
         <td><code>dataset_scene_id</code></td>
         <td><code>int</code></td>
         <td><p>场景id。默认1 枚举</p></td>
         <td><code>1</code></td>
-      </tr>
-      <tr>
-        <td><code>sep</code></td>
-        <td><code>str</code></td>
-        <td><p>表格分隔符。 枚举</p></td>
-        <td><code>&#39;\\t&#39;</code></td>
       </tr>
       <tr>
         <td><code>max_chunk_size</code></td>
@@ -773,9 +923,7 @@ Dataset            (<span title="deepwisdom.models.api_object.APIObject">APIObje
     <span class="bp">cls</span><span class="p">,</span>
     <span class="n">filename</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">model_type</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">annotation_type</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
     <span class="n">dataset_scene_id</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
-    <span class="n">sep</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\\</span><span class="s2">t&quot;</span><span class="p">,</span>
     <span class="n">max_chunk_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">10</span><span class="o">*</span><span class="mi">1024</span><span class="o">*</span><span class="mi">1024</span>
 <span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
@@ -783,17 +931,14 @@ Dataset            (<span title="deepwisdom.models.api_object.APIObject">APIObje
 <span class="sd">    Args:</span>
 <span class="sd">        filename: 本地数据集的绝对路径</span>
 <span class="sd">        model_type: 模态类型。 0CSV,1VIDEO,2IMAGE,3SPEECH,4TEXT</span>
-<span class="sd">        annotation_type: 标注类型。默认已标注1</span>
 <span class="sd">        dataset_scene_id: 场景id。默认1 枚举</span>
-<span class="sd">        sep: 表格分隔符。 枚举</span>
 <span class="sd">        max_chunk_size: 分片上传的大小</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        Dataset</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="n">dataset_id</span><span class="p">,</span> <span class="n">msg</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">dataset_upload</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">model_type</span><span class="p">,</span> <span class="n">annotation_type</span><span class="p">,</span>
-                                         <span class="n">dataset_scene_id</span><span class="p">,</span> <span class="n">sep</span><span class="p">,</span> <span class="n">max_chunk_size</span><span class="p">)</span>
+    <span class="n">dataset_id</span><span class="p">,</span> <span class="n">msg</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">dataset_upload</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">model_type</span><span class="p">,</span> <span class="n">dataset_scene_id</span><span class="p">,</span> <span class="n">max_chunk_size</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">dataset_id</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
         <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
         <span class="k">raise</span> <span class="n">err</span><span class="o">.</span><span class="n">UploadTrainDataError</span>
@@ -884,7 +1029,7 @@ Dataset            (<span title="deepwisdom.models.api_object.APIObject">APIObje
 
 
 <h3 id="deepwisdom.models.dataset.Dataset.dataset_upload" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">dataset_upload</span><span class="p">(</span><span class="n">file_path</span><span class="p">,</span> <span class="n">model_type</span><span class="p">,</span> <span class="n">annotation_type</span><span class="p">,</span> <span class="n">dataset_scene_id</span><span class="p">,</span> <span class="n">sep</span><span class="p">,</span> <span class="n">max_chunk_size</span><span class="p">)</span></code>
+<code class="highlight language-python"><span class="n">dataset_upload</span><span class="p">(</span><span class="n">file_path</span><span class="p">,</span> <span class="n">model_type</span><span class="p">,</span> <span class="n">dataset_scene_id</span><span class="p">,</span> <span class="n">max_chunk_size</span><span class="p">)</span></code>
 
   <span class="doc doc-properties">
       <small class="doc doc-property doc-property-classmethod"><code>classmethod</code></small>
@@ -920,20 +1065,8 @@ Dataset            (<span title="deepwisdom.models.api_object.APIObject">APIObje
         <td><em>required</em></td>
       </tr>
       <tr>
-        <td><code>annotation_type</code></td>
-        <td><code>int</code></td>
-        <td></td>
-        <td><em>required</em></td>
-      </tr>
-      <tr>
         <td><code>dataset_scene_id</code></td>
         <td><code>int</code></td>
-        <td></td>
-        <td><em>required</em></td>
-      </tr>
-      <tr>
-        <td><code>sep</code></td>
-        <td><code>str</code></td>
         <td></td>
         <td><em>required</em></td>
       </tr>
@@ -952,9 +1085,7 @@ Dataset            (<span title="deepwisdom.models.api_object.APIObject">APIObje
     <span class="bp">cls</span><span class="p">,</span>
     <span class="n">file_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
     <span class="n">model_type</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
-    <span class="n">annotation_type</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
     <span class="n">dataset_scene_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
-    <span class="n">sep</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
     <span class="n">max_chunk_size</span><span class="p">:</span> <span class="nb">int</span>
 <span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
@@ -962,9 +1093,7 @@ Dataset            (<span title="deepwisdom.models.api_object.APIObject">APIObje
 <span class="sd">    Args:</span>
 <span class="sd">        file_path:</span>
 <span class="sd">        model_type:</span>
-<span class="sd">        annotation_type:</span>
 <span class="sd">        dataset_scene_id:</span>
-<span class="sd">        sep:</span>
 <span class="sd">        max_chunk_size:</span>
 
 <span class="sd">    Returns:</span>
@@ -1020,8 +1149,6 @@ Dataset            (<span title="deepwisdom.models.api_object.APIObject">APIObje
     <span class="n">dataset_deal_data</span><span class="p">[</span><span class="s2">&quot;upload_id&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">upload_id</span>
     <span class="n">dataset_deal_data</span><span class="p">[</span><span class="s2">&quot;chunk_id_list&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">chunk_id_list</span><span class="p">)</span>
     <span class="n">dataset_deal_data</span><span class="p">[</span><span class="s2">&quot;modal_type&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">model_type</span>
-    <span class="n">dataset_deal_data</span><span class="p">[</span><span class="s2">&quot;sep&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">sep</span>
-    <span class="n">dataset_deal_data</span><span class="p">[</span><span class="s2">&quot;annotation_type&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">annotation_type</span>
     <span class="c1"># 场景Id， 二分等</span>
     <span class="n">dataset_deal_data</span><span class="p">[</span><span class="s2">&quot;dataset_scene_id&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">dataset_scene_id</span>
 
@@ -1119,6 +1246,58 @@ Dataset            (<span title="deepwisdom.models.api_object.APIObject">APIObje
 
 
 
+<h3 id="deepwisdom.models.dataset.Dataset.get_eda" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">get_eda</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></code>
+
+
+</h3>
+
+    <div class="doc doc-contents ">
+
+      <p>获取数据集的eda</p>
+
+<p><strong>Returns:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td></td>
+      <td><p>pandas.DataFrame</p></td>
+    </tr>
+  </tbody>
+</table>
+        <details class="quote">
+          <summary>Source code in <code>deepwisdom/models/dataset.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">get_eda</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    获取数据集的eda</span>
+<span class="sd">    Returns:</span>
+<span class="sd">        pandas.DataFrame</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;dataset_id&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">dataset_id</span>
+    <span class="p">}</span>
+
+    <span class="n">server_data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_server_data</span><span class="p">(</span><span class="n">API_URL</span><span class="o">.</span><span class="n">DATASET_EDA</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">server_data</span><span class="p">[</span><span class="s2">&quot;data&quot;</span><span class="p">],</span> <span class="n">columns</span><span class="o">=</span><span class="n">server_data</span><span class="p">[</span><span class="s2">&quot;columns&quot;</span><span class="p">],</span> <span class="n">index</span><span class="o">=</span><span class="n">server_data</span><span class="p">[</span><span class="s2">&quot;index&quot;</span><span class="p">])</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
 <h3 id="deepwisdom.models.dataset.Dataset.modify_dataset" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">modify_dataset</span><span class="p">(</span><span class="n">dataset_id</span><span class="p">,</span> <span class="n">new_name</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">)</span></code>
 
@@ -1177,6 +1356,63 @@ Dataset            (<span title="deepwisdom.models.api_object.APIObject">APIObje
     <span class="p">}</span>
 
     <span class="bp">cls</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">_patch</span><span class="p">(</span><span class="n">API_URL</span><span class="o">.</span><span class="n">DATASET_MODIFY</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h3 id="deepwisdom.models.dataset.Dataset.modify_eda" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">modify_eda</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">eda</span><span class="p">)</span></code>
+
+
+</h3>
+
+    <div class="doc doc-contents ">
+
+      <p>修改数据集的eda</p>
+
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>eda</code></td>
+        <td><code>pandas.DataFrame</code></td>
+        <td></td>
+        <td><em>required</em></td>
+      </tr>
+  </tbody>
+</table>
+        <details class="quote">
+          <summary>Source code in <code>deepwisdom/models/dataset.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">modify_eda</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">eda</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    修改数据集的eda</span>
+<span class="sd">    Args:</span>
+<span class="sd">        eda (pandas.DataFrame):</span>
+
+<span class="sd">    Returns:</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;dataset_id&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">dataset_id</span><span class="p">,</span>
+        <span class="s2">&quot;eda&quot;</span><span class="p">:</span> <span class="n">eda</span><span class="o">.</span><span class="n">to_json</span><span class="p">(</span><span class="n">orient</span><span class="o">=</span><span class="s1">&#39;split&#39;</span><span class="p">)</span>
+    <span class="p">}</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">_patch</span><span class="p">(</span><span class="n">API_URL</span><span class="o">.</span><span class="n">DATASET_EDA</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
 </code></pre></div>
         </details>
     </div>

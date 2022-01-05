@@ -29,3 +29,4 @@ log/*
 *.swo
 
 venv
+pandas
