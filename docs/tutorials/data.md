@@ -11,3 +11,7 @@
 
 ## 数据集信息修改
 1. 支持数据集名称的修改`modify_dataset`
+
+## eda
+1. eda查询`get_eda`
+2. eda修改`modify_eda`

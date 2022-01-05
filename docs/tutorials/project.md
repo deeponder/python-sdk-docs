@@ -17,3 +17,9 @@
 
 ## 项目详情
 1. 目前详情信息为Project的成员变量，没有暴露更多的信息
+
+## 搜索空间
+1. 支持高级配置中搜索空间的配置
+2. 获取指定模态任务的搜索空间`SearchSpace.create`
+3. 指定搜索空间的model`SearchSpace.custom_model_hp`
+4. 例子参照example中的主流程用例
