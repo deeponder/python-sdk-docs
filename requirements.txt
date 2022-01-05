@@ -3,7 +3,6 @@ certifi==2021.10.8
 charset-normalizer==2.0.9
 click==8.0.3
 Cython==0.29.26
-deepwisdom==0.2.0
 ghp-import==2.0.2
 idna==3.3
 importlib-metadata==4.8.3
