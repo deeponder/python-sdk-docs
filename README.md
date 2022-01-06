@@ -1,7 +1,8 @@
 # 依赖
 python3
-# 安装
-`pip3 install deepwisdom -i https://pypi.deepwisdomai.com`
+# 安装/升级
+1. 安装：`pip3 install deepwisdom -i https://pypi.deepwisdomai.com`
+2. 升级： `pip3 install deepwisdom -i https://pypi.deepwisdomai.com --upgrade`
 # 配置
 1. 鉴权通过OAuth2.0, 所以这里要先申请用户的`appid`、`api_key`、`secret_key`
 2. 配置方式一：直接通过制定参数的方式实例化api_client， 参考快速开始部分

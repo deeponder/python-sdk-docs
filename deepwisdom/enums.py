@@ -55,6 +55,7 @@ API_URL = enum(
     PROJECT_MODEL="sdk/model",  #模型详情：  /project/model
     PROJECT_MODEL_SELECT="sdk/modelselect",  #需要部署的模型信息： /project/model/select
     PROJECT_MODEL_SS="sdk/modelss",  #搜索空间详情： /modal/task/ss  GET
+    MODEL_DOWNLOAD="sdk/modeldownload", #模型文件下载： /project/model/download
     DATASET_PREDICT_UPLOAD="sdk/predictupload", #离线预测数据集上传： /predict/dataset/upload
     DATASET_PREDICT_LIST="sdk/predictlist",  # 离线预测数据集列表  /predict/datasets
     PREDICTION_DETAIL="sdk/projeval/detail",

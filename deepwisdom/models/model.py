@@ -1,8 +1,10 @@
 import json
+import os
 import time
 import logging
 
 import six
+import requests
 import trafaret as t
 import deepwisdom.errors as err
 
@@ -22,6 +24,20 @@ class DicTableModel(Model):
     """
     表格二分类
     """
+
+
+def _get_models_dir():
+    return os.path.expanduser("~/deepwisdom/models")
+
+
+def _get__model_file(dir_path, filename):
+    file_path = os.path.join(dir_path, filename)
+    os.makedirs(os.path.dirname(file_path), exist_ok=True)
+
+    return file_path
+
+
+_file_exists = os.path.isfile
 
 
 class ModelInstance(APIObject):
@@ -57,3 +73,35 @@ class ModelInstance(APIObject):
         self.trial_type = trial_type
         self.model_id = model_id
         self.model_name = model_name
+
+    def download_model(self, dir_path=None):
+        """
+        下载模型文件到指定的目录， 默认~/deepwisdom/models
+        目前支持表格类下载
+        Args:
+            dir_path (string): 自定义目录路径
+
+        Returns:
+
+        """
+        data = {
+            "model_id": self.model_id
+        }
+
+        server_data = self._server_data(API_URL.MODEL_DOWNLOAD, data)
+        if dir_path is None:
+            dir_path = _get_models_dir()
+
+        file_list = server_data["model_files"]
+        for file_obj in file_list:
+            if "is_dir" in file_obj and "is_dir" is True:
+                continue
+
+            r = requests.get(file_obj["file_url"], stream=True)
+            file_path = _get__model_file(dir_path, file_obj["file_name"].split("/")[-1])
+            with open(file_path, "wb") as f:
+                for chunk in r.iter_content(chunk_size=1024):  # 1024 bytes
+                    if chunk:
+                        f.write(chunk)
+
+

@@ -515,7 +515,7 @@ class Project(APIObject):
 
     def upload_predict_dataset(self, filename=None):
         """
-
+        上传表格类离线预测数据集
         Args:
             filename (str):
 
@@ -556,21 +556,9 @@ class Project(APIObject):
         init_data = [dict(PredictDataset._safe_data(item)) for item in server_data]
         return [PredictDataset(project_id=self.project_id, **data) for data in init_data]
 
-    def predict_file(self, model_id: int, filename) -> OfflinePrediction:
-        """预测文件
-
-        Returns:
-            OfflinePrediction: 离线预测对象
-        """
-        dataset = self.upload_predict_dataset(filename)
-        if not dataset:
-            return None
-        prediction = OfflinePrediction.predict(model_id, dataset.dataset_id)
-        return prediction
-
-    def create_service(self, model_id: int, service_name: str, gpu_num: int, gpu_mem: int, mem: int, min_pod: int,
+    def create_service(self, model_id: int, service_name: str, gpu_mem: int, mem: int, min_pod: int,
                        max_pod: int) -> Deployment:
-        req = CreateDeployRequest(self.project_id, model_id, service_name, gpu_num, gpu_mem, mem, min_pod, max_pod)
+        req = CreateDeployRequest(self.project_id, model_id, service_name, gpu_mem, mem, min_pod, max_pod)
         return Deployment.create_deployment(req)
 
 

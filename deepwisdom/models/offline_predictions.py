@@ -13,6 +13,11 @@ import deepwisdom.errors as err
 from deepwisdom.enums import API_URL
 from dataclasses import dataclass
 
+PREDICT_STATUS_NONE = 0
+PREDICT_STATUS_RUNNING = 1
+PREDICT_STATUS_FINISH = 2
+PREDICT_STATUS_FAILED = 3
+
 
 @dataclass
 class OfflinePredictionListMember(APIObject):
@@ -133,7 +138,7 @@ class OfflinePrediction(APIObject):
         """获取离线预测状态
 
         Returns:
-            Int: 服务状态：1-预测中，2-预测完成，3-预测失败
+            Int: 服务状态：0未预测, 1预测中, 2预测结束, 3预测失败
         """
         data = {
             "offline_id": self.offline_id,
@@ -145,8 +150,8 @@ class OfflinePrediction(APIObject):
             filtered = self._filter_data(checked)
             if rsp['ret'] == -1:
                 rsp['status'] = 3
-            self.from_server_data(filtered)
-            return self.status
+            self = self.from_server_data(filtered)
+            return rsp["status"]
         return Int(0)
 
     def wait_for_result(self):
@@ -157,8 +162,11 @@ class OfflinePrediction(APIObject):
         status = self.get_predict_status()
         while status == 1:
             status = self.get_predict_status()
+            if status == PREDICT_STATUS_FINISH or status == PREDICT_STATUS_FAILED:
+                break
             time.sleep(3)
-        return self
+        self.status = status
+        return status
 
     @classmethod
     def delete_predictions(cls, offline_ids: List[int]):
@@ -169,18 +177,18 @@ class OfflinePrediction(APIObject):
         data = {
             "offline_ids": offline_ids
         }
-        rsp = cls._client._post(API_URL.PREDICTION_DELETE, data)
+        rsp = cls._client._delete(API_URL.PREDICTION_DELETE, data)
         if "data" in rsp:
             return rsp['data']
         return None
 
     @classmethod
     def result_download(cls, project_id: int, target_path: str):
-        """项目预测报告下载,当前由前端渲染后下载，暂时不支持服务端直接下载 TODO
-
-        Args:
-            project_id (int64):  项目id
-        """
+        # """项目预测报告下载,当前由前端渲染后下载，暂时不支持服务端直接下载 TODO
+        #
+        # Args:
+        #     project_id (int64):  项目id
+        # """
         data = {
             "project_id": project_id,
         }
@@ -195,16 +203,16 @@ class OfflinePrediction(APIObject):
 
     @classmethod
     def dataset_download(cls, offline_id: int, target_path: str, target_cols: List[str] = []):
-        """离线预测数据集下载，暂时不可用 TODO
-
-        Args:
-            offline_id (int): 预测数据集id
-            target_path (str): 下载路径
-            target_cols (List[str]): 数据列选择,默认为空[]
-
-        Returns:
-            str: 数据集地址
-        """
+        # """离线预测数据集下载，暂时不可用 TODO
+        #
+        # Args:
+        #     offline_id (int): 预测数据集id
+        #     target_path (str): 下载路径
+        #     target_cols (List[str]): 数据列选择,默认为空[]
+        #
+        # Returns:
+        #     str: 数据集地址
+        # """
         data = {
             "offline_id": offline_id,
             "dataset_id": target_cols,

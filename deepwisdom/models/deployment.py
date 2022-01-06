@@ -33,9 +33,8 @@ class CreateDeployRequest(dict):
     project_id: int  # 项目id
     model_inst_id: int  # 模型id
     name: str  # 服务名
-    gpu_num: int = 0  # gpu数量
-    gpu_mem: int = 0  # gpu显存限制MB
-    memory_limit: int = 0  # MB 内存限制
+    gpu_mem: int = 0  # gpu显存限制GB
+    memory_limit: int = 0  # GB 内存限制
     max_pod: int = 0  # 最大pod数
     min_pod: int = 0  # 最少pod数
 
@@ -43,18 +42,8 @@ class CreateDeployRequest(dict):
     #     if k in self.__dataclass_fields__:
     #         self[k] = v
     #     super().__setattr__(k, v)
-    def __init__(self, project_id, model_inst_id, name, gpu_num=1, gpu_mem=1024, memory_limit=1024, min_pod=1,
-                 max_pod=10):
-        # self.project_id = project_id
-        # self.model_inst_id = model_inst_id
-        # self.name = name
-        # self.gpu_num = gpu_num
-        # self.gpu_mem = gpu_mem
-        # self.memory_limit = memory_limit
-        # self.max_pod = max_pod
-        # self.min_pod = min_pod
-
-        super().__init__(project_id=project_id, model_inst_id=model_inst_id, name=name, gpu_num=gpu_num,
+    def __init__(self, project_id, model_inst_id, name, gpu_mem=2, memory_limit=2, min_pod=0, max_pod=1):
+        super().__init__(project_id=project_id, model_inst_id=model_inst_id, name=name, gpu_num=0,
                          gpu_mem=gpu_mem, memory_limit=memory_limit, max_pod=max_pod,
                          min_pod=min_pod)
 
@@ -92,12 +81,16 @@ class Deployment(APIObject):
             t.Key("serverless_infer_id"): Int,  # 服务部署id,
             t.Key("token"): String,  # 服务调用token,
             t.Key("token_url"): String,  # 服务调用token,
-            t.Key("infer_lock",optional=True): Int,
+            t.Key("deploy_model", optional=True): String,  # 部署的模型名称,
+            t.Key("route_path", optional=True): String,  # 服务调用api
+            # t.Key("failed_log", optional=True,default=""): String,  # 服务失败日志
+            t.Key("status", optional=True): Int,  # 服务状态
+            t.Key("infer_lock", optional=True): Int,
             t.Key("min_pod"): Int,
             t.Key("max_pod"): Int,
             t.Key("create_time"): String,  # 2021-10-27 18:43:12,
             t.Key("update_time"): String,  # 2021-10-27 18:43:12,
-            t.Key("deploy_time",optional=True): String,  # 2021-10-27 18:43:12,
+            t.Key("deploy_time", optional=True): String,  # 2021-10-27 18:43:12,
             t.Key("is_del"): Int,
         }
     ).allow_extra("*")
@@ -137,22 +130,6 @@ class Deployment(APIObject):
         if "data" in rsp and "ret" in rsp["data"] and len(rsp["data"]["ret"]) == 1:
             return cls.from_server_data(rsp['data']["ret"][0])
         return None
-
-    @classmethod
-    def get_deployment_detail(cls, service_id, **kwargs) -> "Deployment":
-        """获取服务详情
-
-        Args:
-            service_id (int): 服务id
-        Returns:
-            Deployment: 服务详情
-        """
-        data = {
-            "service_id": service_id
-        }
-        rsp = cls._server_data(API_URL.DEPLOY_GET_SERVICE_DETAIL, data)
-        if rsp:
-            return cls.from_server_data(rsp)
 
     @classmethod
     def get_service(cls, service_id, **kwargs) -> "Deployment":
@@ -263,8 +240,8 @@ class Deployment(APIObject):
         Returns:
             Int: 服务状态：1-创建，2-调度中，3-调度成功，4-执行中，5-创建失败，6-挂起，7-取消，8-删除中，9- 已删除
         """
-        self.get_deployment_detail(self.id)
-        return self.status
+        svc = self.get_service(self.id)
+        return svc.status
 
     def call_service(self, data: Any) -> Any:
         """调用服务
@@ -277,10 +254,11 @@ class Deployment(APIObject):
         """
 
         header = {
-            "Authorization": "Bearer  {}".format(self.token)
+            "Authorization": "Bearer  {}".format(self.token),
+            "Content-Type": "application/json; charset=utf-8",
         }
         rsp = self._client.raw_request(
-            "post", self.token_url, data, headers=header)
+            "post", self.token_url, json=data, headers=header)
         return rsp
 
     @classmethod
