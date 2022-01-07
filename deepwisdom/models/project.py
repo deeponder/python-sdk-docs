@@ -90,8 +90,8 @@ class SearchSpace(APIObject):
             "modal_type": model_type,
             "task_type": task_type
         }
-        server_data = cls._server_data(API_URL.PROJECT_MODEL_SS, data)
-        return cls(server_data["search_space_id"], server_data["search_space_info"])
+        server_data = cls._server_data(cls._client.admin_domain+API_URL.PROJECT_MODEL_SS, data)
+        return cls(server_data["id"], json.loads(server_data["searchSpace"]))
 
     def custom_model_hp(self, hp_names: List):
         """
@@ -105,20 +105,19 @@ class SearchSpace(APIObject):
         new_ss = list()
         new_model_hp = list()
         model_sub_ss = dict()
-        feature_sub_ss = dict()
+        # feature_sub_ss = dict()
         for sub_ss in self.search_space_info:
             if sub_ss["hp_subspace"] == "modeling":
                 model_sub_ss = sub_ss
-
-            if sub_ss["hp_subspace"] == "feature_engineering":
-                feature_sub_ss = sub_ss
+            else:
+                new_ss.append(sub_ss)
 
         for hp_obj in model_sub_ss["hp_values"]["model"]["hp_values"]:
             if hp_obj["hp_name"] in hp_names:
                 new_model_hp.append(hp_obj)
 
         model_sub_ss["hp_values"]["model"]["hp_values"] = new_model_hp
-        new_ss.extend((feature_sub_ss, model_sub_ss))
+        new_ss.append(model_sub_ss)
 
         self.search_space_info = new_ss
 
@@ -177,10 +176,10 @@ class Project(APIObject):
             model_type=None,
             task_type=None,
             description=None,
-            scene=None,
+            scene=8,
             primary_label=None,
             primary_main_time_col=None,
-            id_cols=None,
+            id_cols=[],
             table_relation=None,
             advance_settings: Optional[AdvanceSetting] = None,
             search_space_id=1,
@@ -192,8 +191,8 @@ class Project(APIObject):
         """
         从现有的数据集创建项目
         Args:
-            agg_cols (): 时间粒度："day","week","month","year"（表格类时序项目必须）
-            time_size (): 聚合列（表格类时序项目必须，用户没有选中列时为空数组）
+            agg_cols (List): 聚合列（表格类时序项目必须，用户没有选中列时为空数组）
+            time_size (str): 时间粒度："day","week","month","year"（表格类时序项目必须）
             dataset_id (int): 数据集id
             name (str): 项目名
             model_type (int): 模态类型。 0CSV,1VIDEO,2IMAGE,3SPEECH,4TEXT
@@ -202,7 +201,7 @@ class Project(APIObject):
             scene (int): 场景标签。 枚举
             primary_label (str):  预测列
             primary_main_time_col (str):  时间列
-            id_cols (str): id列
+            id_cols (List): id列, 如["c_session_id"]
             table_relation (str): 表关系
             advance_settings (AdvanceSetting): 高级
             search_space_id (int): 搜索空间id
@@ -225,7 +224,7 @@ class Project(APIObject):
         proj_data["scene"] = scene
         proj_data["primary_label"] = primary_label
         proj_data["primary_main_time_col"] = primary_main_time_col
-        proj_data["id_cols"] = id_cols
+        proj_data["id_cols"] = json.dumps(id_cols)
         proj_data["table_relation"] = json.dumps({"primary_table": dataset_id, "secondary_tables": []})
 
         settings = deepcopy(PROJECT_DEFAULT_ADVANCE_SETTING)
@@ -235,7 +234,7 @@ class Project(APIObject):
         proj_data["search_space_id"] = search_space_id
         proj_data["icon"] = icon
         proj_data["time_size"] = time_size
-        proj_data["agg_cols"] = agg_cols
+        proj_data["agg_cols"] = json.dumps(agg_cols)
 
         resp = cls._client._post(API_URL.PROJECT_CREATE, proj_data)
         if resp["code"] != 200 or "data" in resp and "ret" in resp["data"] and resp["data"]["ret"] != 1:

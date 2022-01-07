@@ -9,6 +9,7 @@ from urllib.parse import urljoin, urlparse
 from .enums import (
     DEFAULT_TIMEOUT,
     DEFAULT_DOMAIN,
+    DEFAULT_ADMIN_DOMAIN,
     API_URL,
 )
 
@@ -29,8 +30,8 @@ class RESTClientObject(requests.Session):
             appid=config.appid,
             api_key=config.api_key,
             secret_key=config.secret_key,
-            domain=config.domain
-
+            domain=config.domain,
+            admin_domain=config.admin_domain
         )
 
     def __init__(
@@ -39,6 +40,7 @@ class RESTClientObject(requests.Session):
             api_key=None,
             secret_key=None,
             domain=None,
+            admin_domain=None
 
     ):
         super(RESTClientObject, self).__init__()
@@ -51,6 +53,7 @@ class RESTClientObject(requests.Session):
         self.socket_timeout = DEFAULT_TIMEOUT.SOCKET
         self.upload_timeout = 60.0 * 20
         self.domain = domain
+        self.admin_domain = admin_domain
 
     def _auth(self, refresh=False):
         """
@@ -128,7 +131,12 @@ class RESTClientObject(requests.Session):
         data["token"] = "Hy+b55u4C9KE8GSKEJ5xhw=="
         payload = parse.urlencode(data)
 
-        response = super(RESTClientObject, self).request(method, url, data=payload,
+        if method == "GET":
+            response = super(RESTClientObject, self).request(method, url, params=data,
+                                                             headers=headers,
+                                                             timeout=(self.connect_timeout, self.socket_timeout))
+        else:
+            response = super(RESTClientObject, self).request(method, url, data=payload,
                                                          headers=headers,
                                                          timeout=(self.connect_timeout, self.socket_timeout))
         if not response:
@@ -245,6 +253,7 @@ class DeepWisdomClientConfig(object):
             t.Key("api_key"): String,
             t.Key("secret_key"): String,
             t.Key("domain"): String,
+            t.Key("admin_domain", optional=True): String
         }
     ).allow_extra("*")
     _fields = {k.to_name or k.name for k in _converter.keys}
@@ -254,13 +263,15 @@ class DeepWisdomClientConfig(object):
             appid=None,
             api_key=None,
             secret_key=None,
-            domain=DEFAULT_DOMAIN
+            domain=None,
+            admin_domain=None
     ):
         self._authObj = None
         self.appid = appid
         self.api_key = api_key
         self.secret_key = secret_key
         self.domain = domain
+        self.admin_domain = admin_domain
 
     @classmethod
     def from_data(cls, data):

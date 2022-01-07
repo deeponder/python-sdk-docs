@@ -13,6 +13,7 @@ import deepwisdom.errors as err
 from deepwisdom._compat import Int, String
 from .api_object import APIObject
 from deepwisdom.enums import API_URL
+from deepwisdom.utils import aes
 import numpy as np
 import pandas as pd
 
@@ -26,6 +27,20 @@ def _get_upload_id(file_path):
         logging.error("%s doesn't exist, no md5", file_path)
         return ""
 
+@dataclass
+class MysqlConf(dict):
+    host: string = None
+    port: string = None
+    user: string = None
+    password: string = None
+    db: string = None
+    encodings: string = None
+    passwordCustom: string = None
+
+    def __setattr__(self, k, v):
+        if k in self.__dataclass_fields__:
+            self[k] = v
+        super().__setattr__(k, v)
 
 _base_dataset_schema = t.Dict(
     {
@@ -75,11 +90,12 @@ class Dataset(APIObject):
         cls._client._delete(API_URL.DATASET_DELETE, data)
 
     @classmethod
-    def dataset_search(cls, query: str):
+    def dataset_search(cls, query: str = "", dataset_id: int = None):
         """
         查询数据集列表
         默认只拉一页，至多50条数据, 按更新的时间排序
         Args:
+            dataset_id (int): 数据集id
             query (str): 模糊查询关键字
 
         Returns:
@@ -89,8 +105,15 @@ class Dataset(APIObject):
             "query": query,
             "page": 1,
             "limit": 50,
-            "sortrules": "-update_time"
+            "sortrules": "-update_time",
+            "usable": 1
         }
+        if dataset_id is not None:
+            dataset = {
+                "dataset_id": dataset_id
+            }
+            data.update(dataset)
+
         server_data = cls._server_data(API_URL.DATASET_LIST, data)
         init_data = [dict(Dataset._safe_data(item)) for item in server_data]
         return [Dataset(**data) for data in init_data]
@@ -114,6 +137,14 @@ class Dataset(APIObject):
         Returns:
             数据集对象数组， 每个表对应一个数据集对象
         """
+        # 密码做aes加密
+        ac = aes.AesCrypt('ECB', '', 'utf-8', 'databaseloginpwd')
+        conn_json = json.loads(conn_info)
+        if conn_json.__contains__("password"):
+            conn_json["password"] = ac.aesencrypt(conn_json["password"])
+
+        conn_info = json.dumps(conn_json)
+
         data = {
             "conn_info": conn_info,
             "cloud_type": cloud_type,
@@ -129,6 +160,12 @@ class Dataset(APIObject):
 
         datasets = []
         for dataset_id in table_map:
+            # 等待数据集处理完成
+            while True:
+                tmp_datasets = cls.dataset_search(dataset_id=dataset_id)
+                if len(tmp_datasets) > 0:
+                    break
+
             data = {
                 "dataset_id": dataset_id
             }
@@ -161,6 +198,12 @@ class Dataset(APIObject):
         if dataset_id < 0:
             logging.info(msg)
             raise err.UploadTrainDataError
+
+        # 等待数据集处理完成
+        while True:
+            datasets = cls.dataset_search(dataset_id=dataset_id)
+            if len(datasets) > 0:
+                break
 
         data = {
             "dataset_id": dataset_id

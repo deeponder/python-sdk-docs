@@ -16,10 +16,12 @@ def Client(
     secret_key=None,
     appid=None,
     domain=None,
+    admin_domain=API_DOMAIN.ADMIN
 ):
     """
     api请求客户端
     Args:
+        admin_domain (str):
         api_key:
         secret_key:
         appid:
@@ -36,6 +38,7 @@ def Client(
             api_key=api_key,
             secret_key=secret_key,
             domain=domain,
+            admin_domain=admin_domain
         )
     else:
         config_path = _get_default_config_file()
