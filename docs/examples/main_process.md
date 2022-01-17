@@ -13,11 +13,10 @@ class TestMainProcess(unittest.TestCase):
         api_client = dw.Client(appid=4, api_key="RrTLKoGrgKRXkSJAstcndNLa",
                                secret_key="xJHb3TjOxh1cqVb0seLBEpHDWLA3fYE7", domain="http://192.168.50.122:30772")
         dw.set_client(client=api_client)
-        # # 数据集
+        # 数据集
         dataset = dw.Dataset.create_from_file(dataset_file_path+dataset_file_name, 0)
         self.assertEqual(dataset.dataset_name, dataset_file_name)
-        time.sleep(60)  #这里需要等dataset都处理完（包括eda啥的）  @chucheng
-        # # 项目
+        # 项目
         primary_label = "is_marry"
         project_name = "SDK-MAIN-PROCESS-TEST"
         train_setting = dw.TrainSetting(training_program="zhipeng", max_trials=3)
