@@ -129,7 +129,7 @@ class Dataset(APIObject):
         """
         目前支持从mysql导入创建
         Args:
-            conn_info (json字符串): mysql的连接信息。 mysql: {"host":"xxx","port":"3306","user":"xx","password":"xxx","db":"","encoding":"utf8","passwordCustom":"xx"}
+            conn_info (json字符串): mysql的连接信息。 mysql/hive: {"host":"xxx","port":"3306","user":"xx","password":"xxx","db":"","encoding":"utf8","passwordCustom":"xx"}
             cloud_type (int): 云类型: 0本地, 1Amazon, 2阿里云, 3腾讯云, 4华为云
             source (int):  数据来源: 0本地文件, 1mysql, 2oracle, 3mariadb, 4hdfs, 5hive
             chosed_tables (json字符):  选择的table 列表。 [{"autotables":[{"table_name":"dataset_update_record"}]}]
