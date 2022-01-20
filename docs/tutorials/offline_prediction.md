@@ -1,4 +1,4 @@
-# 离线预测
+# 离线预测(OfflinePrediction)
 获取离线预测列表 `list_predictions`
 
 ## 创建离线预测

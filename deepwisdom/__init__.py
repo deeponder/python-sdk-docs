@@ -9,8 +9,8 @@ from .models import (
     OfflinePrediction,
     Deployment,
     Project,
-    TableRelation,
     AdvanceSetting,
     TrainSetting,
-    SearchSpace
+    SearchSpace,
+    CreateDeployRequest
 )

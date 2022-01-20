@@ -5,7 +5,6 @@ import os
 import time
 import string
 from io import BytesIO
-from dataclasses import dataclass
 
 import trafaret as t
 import deepwisdom.errors as err
@@ -14,7 +13,6 @@ from deepwisdom._compat import Int, String
 from .api_object import APIObject
 from deepwisdom.enums import API_URL
 from deepwisdom.utils import aes
-import numpy as np
 import pandas as pd
 
 
@@ -27,20 +25,6 @@ def _get_upload_id(file_path):
         logging.error("%s doesn't exist, no md5", file_path)
         return ""
 
-@dataclass
-class MysqlConf(dict):
-    host: string = None
-    port: string = None
-    user: string = None
-    password: string = None
-    db: string = None
-    encodings: string = None
-    passwordCustom: string = None
-
-    def __setattr__(self, k, v):
-        if k in self.__dataclass_fields__:
-            self[k] = v
-        super().__setattr__(k, v)
 
 _base_dataset_schema = t.Dict(
     {
@@ -51,6 +35,7 @@ _base_dataset_schema = t.Dict(
         t.Key("file_type", optional=True): Int,
     }
 )
+
 
 class Dataset(APIObject):
     """
@@ -76,7 +61,7 @@ class Dataset(APIObject):
     @classmethod
     def delete(cls, dataset_ids: list):
         """
-        批量数据集
+        批量数据集删除
         Args:
             dataset_ids (list): 需要删除的数据集id列表
 
@@ -92,13 +77,13 @@ class Dataset(APIObject):
     @classmethod
     def dataset_search(cls, query: str = "", dataset_id: int = None):
         """
-        查询数据集列表
-        默认只拉一页，至多50条数据, 按更新的时间排序
+        查询数据集列表, 默认只拉一页，至多50条数据, 按更新的时间排序
         Args:
             dataset_id (int): 数据集id
             query (str): 模糊查询关键字
 
         Returns:
+            list: 数据集对象列表
 
         """
         data = {
@@ -127,15 +112,15 @@ class Dataset(APIObject):
             chosed_tables: string
     ):
         """
-        目前支持从mysql导入创建
+        目前支持从mysql/hive导入创建
         Args:
             conn_info (json字符串): mysql的连接信息。 mysql/hive: {"host":"xxx","port":"3306","user":"xx","password":"xxx","db":"","encoding":"utf8","passwordCustom":"xx"}
-            cloud_type (int): 云类型: 0本地, 1Amazon, 2阿里云, 3腾讯云, 4华为云
-            source (int):  数据来源: 0本地文件, 1mysql, 2oracle, 3mariadb, 4hdfs, 5hive
-            chosed_tables (json字符):  选择的table 列表。 [{"autotables":[{"table_name":"dataset_update_record"}]}]
+            cloud_type (int): 云类型。 0本地, 1Amazon, 2阿里云, 3腾讯云, 4华为云
+            source (int):  数据来源。 0本地文件, 1mysql, 2oracle, 3mariadb, 4hdfs, 5hive
+            chosed_tables (json字符):  选择的table 列表。 '[{"autotables":[{"table_name":"dataset_update_record"},{"table_name":"scene"}]}]'  # 选择的table 列表。 autotables代表db，dataset_update_record|scene代表autotable下的两个表,支持多层嵌套
 
         Returns:
-            数据集对象数组， 每个表对应一个数据集对象
+            list: 数据集对象列表， 每个表对应一个数据集对象
         """
         # 密码做aes加密
         ac = aes.AesCrypt('ECB', '', 'utf-8', 'databaseloginpwd')
@@ -178,7 +163,7 @@ class Dataset(APIObject):
     def create_from_file(
         cls,
         filename: str = None,
-        model_type: int = None,
+        modal_type: int = None,
         dataset_scene_id: int = 1,
         max_chunk_size: int = 10*1024*1024
     ):
@@ -186,15 +171,15 @@ class Dataset(APIObject):
         从本地上传、创建数据集
         Args:
             filename: 本地数据集的绝对路径
-            model_type: 模态类型。 0CSV,1VIDEO,2IMAGE,3SPEECH,4TEXT
+            modal_type: 模态类型。 0CSV,1VIDEO,2IMAGE,3SPEECH,4TEXT
             dataset_scene_id: 场景id。默认1 枚举
             max_chunk_size: 分片上传的大小
 
         Returns:
-            Dataset
+            Dataset: 数据集对象
         """
 
-        dataset_id, msg = cls.dataset_upload(filename, model_type, dataset_scene_id, max_chunk_size)
+        dataset_id, msg = cls.dataset_upload(filename, modal_type, dataset_scene_id, max_chunk_size)
         if dataset_id < 0:
             logging.info(msg)
             raise err.UploadTrainDataError
@@ -229,7 +214,7 @@ class Dataset(APIObject):
     def dataset_upload(
         cls,
         file_path: str,
-        model_type: int,
+        modal_type: int,
         dataset_scene_id: int,
         max_chunk_size: int
     ):
@@ -237,7 +222,7 @@ class Dataset(APIObject):
         数据集上传
         Args:
             file_path:
-            model_type:
+            modal_type:
             dataset_scene_id:
             max_chunk_size:
 
@@ -252,7 +237,7 @@ class Dataset(APIObject):
         filename = file_names[-1]
         # 上传准备
         prepare_data = {}
-        prepare_data["modal_type"] = model_type
+        prepare_data["modal_type"] = modal_type
         prepare_data["filename"] = filename
 
         prepare_data["upload_id"] = upload_id
@@ -293,7 +278,7 @@ class Dataset(APIObject):
         dataset_deal_data["filename"] = filename
         dataset_deal_data["upload_id"] = upload_id
         dataset_deal_data["chunk_id_list"] = json.dumps(chunk_id_list)
-        dataset_deal_data["modal_type"] = model_type
+        dataset_deal_data["modal_type"] = modal_type
         # 场景Id， 二分等
         dataset_deal_data["dataset_scene_id"] = dataset_scene_id
 
@@ -342,7 +327,7 @@ class Dataset(APIObject):
         """
         获取数据集的eda
         Returns:
-            pandas.DataFrame
+            pandas.DataFrame: DataFrame对象
 
         """
         data = {
@@ -356,7 +341,7 @@ class Dataset(APIObject):
         """
         修改数据集的eda
         Args:
-            eda (pandas.DataFrame):
+            eda (pandas.DataFrame): eda对应的DataFrame
 
         Returns:
 

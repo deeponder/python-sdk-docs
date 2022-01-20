@@ -69,7 +69,7 @@ class SearchSpace(APIObject):
         搜索空间类
         Args:
             search_space_id (int):
-            search_space_info (List): 搜索空间详情，如[{'hp_subspace': 'feature_engineering', 'desc': '自动特征工程算子', 'hp_values': {'KeyTimeBinSecond': {'hp_type': 'bool', 'hp_values': [True, False], 'desc': '按秒区间量化时间差'}, 'KeyTimeBinMsecond': {'hp_type': 'bool', 'hp_values': [True, False], 'desc': '按毫秒区间量化时间差'}, 'KeyTimeWeekday': {'hp_type': 'bool', 'hp_values': [True, False], 'desc': '时间戳星期'}, 'KeyTimeHour': {'hp_type': 'bool', 'hp_values': [True, False], 'desc': '时间戳小时'}, 'KeyTimeDay': {'hp_type': 'bool', 'hp_values': [True, False], 'desc': '时间戳天数'}, 'KeyTimeMonth': {'hp_type': 'bool', 'hp_values': [True, False], 'desc': '时间戳月份'}, 'KeyTimeYear': {'hp_type': 'bool', 'hp_values': [True, False], 'desc': '时间戳年份'}, 'KeyNumDiff': {'hp_type': 'bool', 'hp_values': [True, False], 'desc': '间隔数量差'}, 'KeyTimeDiff_BW_Window_1': {'hp_type': 'bool', 'hp_values': [True, False], 'desc': '一个间隔时间差'}, 'KeyTimeDiff_FW_Window_10': {'hp_type': 'bool', 'hp_values': [True, False], 'desc': '十个间隔时间差'}, 'McCatRank': {'hp_type': 'bool', 'hp_values': [True, False], 'desc': '多类别排序'}, 'McMcInnerLen': {'hp_type': 'bool', 'hp_values': [True, False], 'desc': '多类别交集长度'}, 'GroupCntDivNunique': {'hp_type': 'bool', 'hp_values': [True, False], 'desc': '聚合类别分散度'}, 'CatCnt': {'hp_type': 'bool', 'hp_values': [True, False], 'desc': '类别计数'}, 'GroupMean': {'hp_type': 'bool', 'hp_values': [True, False], 'desc': '聚合平均'}, 'GroupMax': {'hp_type': 'bool', 'hp_values': [True, False], 'desc': '聚合最大'}, 'GroupMin': {'hp_type': 'bool', 'hp_values': [True, False], 'desc': '聚合最小'}, 'GroupStd': {'hp_type': 'bool', 'hp_values': [True, False], 'desc': '聚合标准差'}, 'GroupMeanMinusSelf': {'hp_type': 'bool', 'hp_values': [True, False], 'desc': '聚合平均减去当前值'}, 'GroupMaxMinusSelf': {'hp_type': 'bool', 'hp_values': [True, False], 'desc': '聚合最大减去当前值'}, 'GroupMinMinusSelf': {'hp_type': 'bool', 'hp_values': [True, False], 'desc': '聚合最小减去当前值'}, 'CatSegCtrOrigin': {'hp_type': 'bool', 'hp_values': [True, False], 'desc': '类别点击通过率'}}}, {'hp_subspace': 'modeling', 'desc': '模型超参算子', 'hp_values': {'model': {'hp_type': 'choice', 'hp_values': [{'hp_name': 'LIGHTGBM', 'learning_rate': {'hp_type': 'loguniform', 'hp_values': [0.005, 0.2], 'desc': '学习率'}, 'feature_fraction': {'hp_type': 'uniform', 'hp_values': [0.75, 1], 'desc': '特征选择比例'}, 'min_data_in_leaf': {'hp_type': 'randint', 'hp_values': [2, 30], 'desc': '叶子节点最小数据量'}, 'num_leaves': {'hp_type': 'randint', 'hp_values': [16, 96], 'desc': '叶子节点个数'}}, {'hp_name': 'CATBOOST', 'depth': {'hp_type': 'randint', 'hp_values': [5, 8], 'desc': '树的深度'}, 'l2_leaf_reg': {'hp_type': 'uniform', 'hp_values': [1, 5], 'desc': 'L2正则化'}}]}}}]
+            search_space_info (List): 搜索空间详情, json对象
         """
 
         self.search_space_id = search_space_id
@@ -84,6 +84,7 @@ class SearchSpace(APIObject):
             task_type (int): 任务类型。0二分类/分类,1多分类/检测/意图识别/匹配,2回归/定位/语音分离/序列,3时序/分隔
 
         Returns:
+            list: 搜索空间对象
 
         """
         data = {
@@ -100,12 +101,12 @@ class SearchSpace(APIObject):
             hp_names (List): 如["LIGHTGBM", "CATBOOST"]
 
         Returns:
+            list: 搜索空间配置信息
 
         """
         new_ss = list()
         new_model_hp = list()
         model_sub_ss = dict()
-        # feature_sub_ss = dict()
         for sub_ss in self.search_space_info:
             if sub_ss["hp_subspace"] == "modeling":
                 model_sub_ss = sub_ss
@@ -173,7 +174,7 @@ class Project(APIObject):
             cls,
             dataset_id,
             name=None,
-            model_type=None,
+            modal_type=None,
             task_type=None,
             description=None,
             scene=8,
@@ -185,17 +186,21 @@ class Project(APIObject):
             search_space_id=1,
             icon='{"name": "IconBangong", "label": "办公"}',
             time_size="day",
-            agg_cols=[]
+            agg_cols=[],
+            type=0,
+            template=3,
 
     ):
         """
         从现有的数据集创建项目
         Args:
+            template (int): 模板ID。1 空白， 2 电商推荐， 3 AT
+            type (int): 项目类型。 0 at，1 ct
             agg_cols (List): 聚合列（表格类时序项目必须，用户没有选中列时为空数组）
             time_size (str): 时间粒度："day","week","month","year"（表格类时序项目必须）
             dataset_id (int): 数据集id
             name (str): 项目名
-            model_type (int): 模态类型。 0CSV,1VIDEO,2IMAGE,3SPEECH,4TEXT
+            modal_type (int): 模态类型。 0CSV,1VIDEO,2IMAGE,3SPEECH,4TEXT
             task_type (int): 任务类型。0二分类/分类,1多分类/检测/意图识别/匹配,2回归/定位/语音分离/序列,3时序/分隔
             description (str): 项目描述
             scene (int): 场景标签。 枚举
@@ -208,11 +213,11 @@ class Project(APIObject):
             icon (str):
 
         Returns:
-            Project
+            Project: 项目对象
         """
 
         proj_data = {}
-        proj_data["modal_type"] = model_type
+        proj_data["modal_type"] = modal_type
         proj_data["name"] = "SDK_PROJ_" + str(dataset_id + time.time())
         if name is not None:
             proj_data["name"] = name
@@ -235,6 +240,8 @@ class Project(APIObject):
         proj_data["icon"] = icon
         proj_data["time_size"] = time_size
         proj_data["agg_cols"] = json.dumps(agg_cols)
+        proj_data["type"] = type
+        proj_data["template"] = template
 
         resp = cls._client._post(API_URL.PROJECT_CREATE, proj_data)
         if resp["code"] != 200 or "data" in resp and "ret" in resp["data"] and resp["data"]["ret"] != 1:
@@ -252,9 +259,10 @@ class Project(APIObject):
         """
         直接从项目id创建项目对象
         Args:
-            proj_id (int):
+            proj_id (int):  项目id
 
         Returns:
+            Project: 项目对象
 
         """
 
@@ -267,9 +275,9 @@ class Project(APIObject):
     @classmethod
     def delete(cls, proj_ids: List):
         """
-
+        删除项目
         Args:
-            proj_ids (List):
+            proj_ids (List):  项目id列表
 
         Returns:
 
@@ -283,7 +291,10 @@ class Project(APIObject):
 
     def update_advance_settings(self, advance_settings: Optional[AdvanceSetting]):
         """
-        项目高级设置更新
+        更新项目配置
+        Args:
+            advance_settings (AdvanceSetting): 项目的高级配置
+
         Returns:
 
         """
@@ -349,8 +360,7 @@ class Project(APIObject):
         """
         检查训练是否完成
         Returns:
-            True:完成
-            False: 未完成
+              bool: 完成状态。 true完成，fase未完成
         """
 
         data = {
@@ -386,7 +396,7 @@ class Project(APIObject):
 
     def terminate_train(self):
         """
-        终止训练， /project/terminate/train
+        终止训练
         Returns:
 
         """
@@ -399,6 +409,7 @@ class Project(APIObject):
         """
         项目绑定的数据集列表
         Returns:
+            Dict: 数据集的json列表
 
         """
 
@@ -409,18 +420,18 @@ class Project(APIObject):
         server_data = self._server_data(API_URL.PROJECT_DATASET_LIST, data)
         return server_data
 
-    def model_list(self):
-        """
-
-        Returns:
-
-        """
+    # def model_list(self):
+    #     """
+    #
+    #     Returns:
+    #
+    #     """
 
     def trial_list(self):
         """
         获取项目的实验列表
         Returns:
-            []Trial
+            list: Trial的对象列表
         """
         data = {
             "project_id": self.project_id
@@ -463,7 +474,7 @@ class Project(APIObject):
         """
         获取推荐的模型
         Returns:
-            ModelInstance
+            ModelInstance: 模型实例对象
         """
 
         solutions = self.solution_list()
@@ -479,7 +490,7 @@ class Project(APIObject):
         """
         项目方案列表
         Returns:
-            []Solution
+            list: Solution对象列表
         """
 
         data = {
@@ -494,11 +505,11 @@ class Project(APIObject):
         """
         需要部署的模型信息
         Args:
-            trial_no (int):
-            trial_type (int):
+            trial_no (int): 实验id
+            trial_type (int): 实验类型
 
         Returns:
-            []ModelInstance
+            list: ModelInstance对象列表
         """
 
         data = {
@@ -516,10 +527,10 @@ class Project(APIObject):
         """
         上传表格类离线预测数据集
         Args:
-            filename (str):
+            filename (str): 本地离线预测数据集路径
 
         Returns:
-
+            PredictDataset: 离线预测数据集
         """
         data = {
             "project_id": self.project_id
@@ -544,6 +555,7 @@ class Project(APIObject):
         """
         离线预测数据集列表
         Returns:
+            list: 离线预测数据集列表
 
         """
         data = {
@@ -561,23 +573,23 @@ class Project(APIObject):
         return Deployment.create_deployment(req)
 
 
-class TableRelation(object):
-    """
-
-    """
-
-    def __init__(
-            self,
-            pri_dataset_id=None,
-            sec_dataset_id=None,
-            main_col=None,
-            main_col_type=None,
-            relation_col=None,
-            relation_col_type=None
-    ):
-        self.pri_dataset_id = pri_dataset_id
-        self.sec_dataset_id = sec_dataset_id
-        self.main_col = main_col
-        self.main_col_type = main_col_type
-        self.relation_col = relation_col
-        self.relation_col_type = relation_col_type
+# class TableRelation(object):
+#     """
+#
+#     """
+#
+#     def __init__(
+#             self,
+#             pri_dataset_id=None,
+#             sec_dataset_id=None,
+#             main_col=None,
+#             main_col_type=None,
+#             relation_col=None,
+#             relation_col_type=None
+#     ):
+#         self.pri_dataset_id = pri_dataset_id
+#         self.sec_dataset_id = sec_dataset_id
+#         self.main_col = main_col
+#         self.main_col_type = main_col_type
+#         self.relation_col = relation_col
+#         self.relation_col_type = relation_col_type

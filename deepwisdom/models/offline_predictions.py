@@ -182,50 +182,50 @@ class OfflinePrediction(APIObject):
             return rsp['data']
         return None
 
-    @classmethod
-    def result_download(cls, project_id: int, target_path: str):
-        # """项目预测报告下载,当前由前端渲染后下载，暂时不支持服务端直接下载 TODO
-        #
-        # Args:
-        #     project_id (int64):  项目id
-        # """
-        data = {
-            "project_id": project_id,
-        }
-        rsp = cls._client._get(API_URL.PREDICTION_RESULT_DOWNLOAD, data)
-        if "data" in rsp and "zip_name" in rsp["data"]:
-            print(rsp)
-            report = cls._client._get(rsp['data']["zip_name"], {})
-            out = open(target_path, "w+")
-            out.write(report)
-            out.close()
-        return None
+    # @classmethod
+    # def result_download(cls, project_id: int, target_path: str):
+    #     # """项目预测报告下载,当前由前端渲染后下载，暂时不支持服务端直接下载 TODO
+    #     #
+    #     # Args:
+    #     #     project_id (int64):  项目id
+    #     # """
+    #     data = {
+    #         "project_id": project_id,
+    #     }
+    #     rsp = cls._client._get(API_URL.PREDICTION_RESULT_DOWNLOAD, data)
+    #     if "data" in rsp and "zip_name" in rsp["data"]:
+    #         print(rsp)
+    #         report = cls._client._get(rsp['data']["zip_name"], {})
+    #         out = open(target_path, "w+")
+    #         out.write(report)
+    #         out.close()
+    #     return None
 
-    @classmethod
-    def dataset_download(cls, offline_id: int, target_path: str, target_cols: List[str] = []):
-        # """离线预测数据集下载，暂时不可用 TODO
-        #
-        # Args:
-        #     offline_id (int): 预测数据集id
-        #     target_path (str): 下载路径
-        #     target_cols (List[str]): 数据列选择,默认为空[]
-        #
-        # Returns:
-        #     str: 数据集地址
-        # """
-        data = {
-            "offline_id": offline_id,
-            "dataset_id": target_cols,
-        }
-        rsp = cls._client._get(API_URL.PREDICTION_DATASET_DOWNLOAD, data)
-        if "data" in rsp:
-            # pass
-            # return rsp['data']
-            fi = cls._client._get(cls.join_dataset_download_path(rsp['data']), {})
-            out = open(target_path, "w+")
-            out.write(fi)
-            out.close()
-        return None
+    # @classmethod
+    # def dataset_download(cls, offline_id: int, target_path: str, target_cols: List[str] = []):
+    #     # """离线预测数据集下载，暂时不可用 TODO
+    #     #
+    #     # Args:
+    #     #     offline_id (int): 预测数据集id
+    #     #     target_path (str): 下载路径
+    #     #     target_cols (List[str]): 数据列选择,默认为空[]
+    #     #
+    #     # Returns:
+    #     #     str: 数据集地址
+    #     # """
+    #     data = {
+    #         "offline_id": offline_id,
+    #         "dataset_id": target_cols,
+    #     }
+    #     rsp = cls._client._get(API_URL.PREDICTION_DATASET_DOWNLOAD, data)
+    #     if "data" in rsp:
+    #         # pass
+    #         # return rsp['data']
+    #         fi = cls._client._get(cls.join_dataset_download_path(rsp['data']), {})
+    #         out = open(target_path, "w+")
+    #         out.write(fi)
+    #         out.close()
+    #     return None
 
     @classmethod
     def join_dataset_download_path(cls, path):

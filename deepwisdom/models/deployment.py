@@ -16,7 +16,7 @@
         print(deploys)
 ---
 修复服务名称:
-        deploy = Deployment.rename_deployment(deploy_id, "猪八戒吃了唐僧")
+        deploy = Deployment.rename_deployment(deploy_id, "test")
 ```
 
 """
@@ -247,10 +247,10 @@ class Deployment(APIObject):
         """调用服务
 
         Args:
-            data (Any): 服务调用入参，get_service_api()可以返回demo
+            data (Any): 服务调用入参
 
         Returns:
-            Any: 响应body，get_service_api()可以返回demo
+            Any: 响应body
         """
 
         header = {

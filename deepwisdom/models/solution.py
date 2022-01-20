@@ -40,7 +40,7 @@ class Solution(APIObject):
 
     def get_detail(self, tab_type=1):
         """
-        这里直接返回详情json, 后续梳理返回结构可细化
+        方案详情
         Args:
             tab_type (int):  1效果图 2模型参数 3模型特征重要性 4 混淆矩阵 5最优跑测结果 6特征相关性 7特征重要性分布
 

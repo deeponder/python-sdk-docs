@@ -1,12 +1,7 @@
-import json
 import os
-import time
-import logging
 
-import six
 import requests
 import trafaret as t
-import deepwisdom.errors as err
 
 from deepwisdom._compat import Int, String
 
@@ -14,17 +9,16 @@ from .api_object import APIObject
 from deepwisdom.enums import API_URL
 
 
-class Model(APIObject):
-    """
+# class Model(APIObject):
+#     """
+#
+#     """
 
-    """
 
-
-class DicTableModel(Model):
-    """
-    表格二分类
-    """
-
+# class DicTableModel(Model):
+#     """
+#     表格二分类
+#     """
 
 def _get_models_dir():
     return os.path.expanduser("~/deepwisdom/models")
@@ -62,7 +56,7 @@ class ModelInstance(APIObject):
         """
         待部署的模型实例
         Args:
-            project_id (int):
+            project_id (int): 项目id
             trial_no (int): 实验id
             trial_type (int): 实验类型
             model_id (int): 模型id
@@ -76,8 +70,7 @@ class ModelInstance(APIObject):
 
     def download_model(self, dir_path=None):
         """
-        下载模型文件到指定的目录， 默认~/deepwisdom/models
-        目前支持表格类下载
+        下载模型文件到指定的目录， 默认~/deepwisdom/models。 目前支持表格类下载
         Args:
             dir_path (string): 自定义目录路径
 

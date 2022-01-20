@@ -80,7 +80,7 @@ def set_client(client):
 
 
 def _get_config_dir():
-    return os.path.expanduser("~/.config/deepwisdom")
+    return os.path.expanduser(os.path.join("~", ".config", "deepwisdom"))
 
 
 def _get_default_config_file():

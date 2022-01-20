@@ -1,47 +1,47 @@
 # 主流程
 ```python
-import time
-import unittest
 import deepwisdom as dw
 
-dataset_file_path = "/Users/up/Downloads/"
-dataset_file_name = "data_upload_test.csv"
-train_succ_status = 2
+if __name__ == "__main__":
+    # 初始化api客户端， 传入申请的appid, api_key, secret_key
+    api_client = dw.Client(appid=4, api_key="xx", secret_key="xxx")
+    dw.set_client(client=api_client)
+    
+    # 从本地数据文件， 上传数据集
+    dataset = dw.Dataset.create_from_file(filename="xxx", modal_type=0) #filename为本地数据集文件path
 
-class TestMainProcess(unittest.TestCase):
-    def test_main_process(self):
-        api_client = dw.Client(appid=4, api_key="RrTLKoGrgKRXkSJAstcndNLa",
-                               secret_key="xJHb3TjOxh1cqVb0seLBEpHDWLA3fYE7", domain="http://192.168.50.122:30772")
-        dw.set_client(client=api_client)
-        # 数据集
-        dataset = dw.Dataset.create_from_file(dataset_file_path+dataset_file_name, 0)
-        self.assertEqual(dataset.dataset_name, dataset_file_name)
-        # 项目
-        primary_label = "is_marry"
-        project_name = "SDK-MAIN-PROCESS-TEST"
-        train_setting = dw.TrainSetting(training_program="zhipeng", max_trials=3)
-        ss = dw.SearchSpace.create(0, 0)
-        ss.custom_model_hp(["LIGHTGBM", "CATBOOST"])
-        settings = dw.AdvanceSetting("off", "ga", 6571, target_train=train_setting, search_space=ss.search_space_info)
-        dataset_id = dataset.dataset_id
-        # dataset_id = 6062
-        project = dw.Project.create_from_dataset(name=project_name, dataset_id=dataset_id, model_type=0, task_type=0,
-                                                 scene=1, primary_label=primary_label, primary_main_time_col="", id_cols="",
-                                                 advance_settings=settings, search_space_id=ss.search_space_id)
-        self.assertEqual(project.name, project_name)
-        ## 训练
-        project.wait_train()
-        self.assertEqual(train_succ_status, project.status)
-        solutions = project.solution_list()
-        solution_one = solutions[0]
-        self.assertEqual(solution_one.project_id, project.project_id)
+    # 从现有的数据集，创建表格二分类的项目
+    primary_label = "is_marry"  # 测试数据源的预测列
+    project_name = "SDK-MAIN-PROCESS-TEST"
+    train_setting = dw.TrainSetting(training_program="deepwisdom", max_trials=3)  # 高级设置-训练参数设置
+    ss = dw.SearchSpace.create(0, 0)  # 获取对应模态的搜索空间
+    settings = dw.AdvanceSetting("off", "ga", 6571, target_train=train_setting, search_space=ss.search_space_info)  # 高级设置
+    dataset_id = dataset.dataset_id
+    project = dw.Project.create_from_dataset(name=project_name, dataset_id=dataset_id, modal_type=0, task_type=0,
+                                             scene=1, primary_label=primary_label, primary_main_time_col="",
+                                             advance_settings=settings, search_space_id=ss.search_space_id)
+    # 训练
+    project.wait_train()
+    solutions = project.solution_list()
+    solution_one = solutions[0]  # 获取推荐的方案
 
-        models = project.get_select_models(solution_one.trial_no, solution_one.trial_type)
-        model_one = models[0]
-        self.assertEqual(model_one.project_id, project.project_id)
+    models = project.get_select_models(solution_one.trial_no, solution_one.trial_type)  
+    model_one = models[0]  # 获取推荐的模型
 
-if __name__ == '__main__':
-    unittest.main()
+    # 上传离线预测数据集
+    predict_dataset = project.upload_predict_dataset(filename="xxx")  #filename为本地数据集文件path
+    # 离线预测
+    offline_predict = dw.OfflinePrediction.predict(model_one.model_id, predict_dataset.dataset_id)
+    offline_predict.wait_for_result()
+    predict_detail = offline_predict.get_predict_detail(offline_predict.offline_id)  # 离线预测结果
 
+    # 在线推理
+    req = dw.CreateDeployRequest(project.project_id, model_one.model_id, "sdk-test", 2, 3, 1, 1)
+    deploy = dw.Deployment.create_deployment(req)
+
+    # api详情
+    api_info = deploy.get_service_api(deploy.id)
+    # 调用api
+    resp = deploy.call_service({})
 
 ```

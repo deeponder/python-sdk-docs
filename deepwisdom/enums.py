@@ -76,7 +76,7 @@ API_URL = enum(
     DEPLOY_GET_DEPLOYMENT_LOG='sdk/deploy/logs',
     DEPLOY_GET_SERVICE_API='sdk/deploy/get_api',
 
-    DATASET_DOWNLOAD_HOST="http://192.168.50.24:5000/proxy/static/"
+    # DATASET_DOWNLOAD_HOST="http://192.168.50.24:5000/proxy/static/"
 
 )
 

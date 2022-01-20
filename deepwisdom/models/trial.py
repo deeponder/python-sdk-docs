@@ -75,6 +75,8 @@ _performance_metric_converter = t.Dict(
 
     }
 ).ignore_extra("*")
+
+
 class PerformanceMetric(APIObject):
     """
 
@@ -108,6 +110,8 @@ _metric_converter = t.Dict(
         t.Key("performance_metrics", optional=True): _performance_metric_converter
     }
 ).ignore_extra("*")
+
+
 class Metric(APIObject):
     """
 
@@ -127,6 +131,7 @@ class Metric(APIObject):
         """
         self.performance_metrics = PerformanceMetric(**performance_metrics)
         self.effect_metrics = EffectMetric(**effect_metrics)
+
 
 class Trial(APIObject):
     """
